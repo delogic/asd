@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.ServletContextAware;
 
-import br.com.delogic.jfunk.Has;
+import br.com.delogic.asd.util.Has;
 
 public class ContentManagerImpl implements ContentManager, ServletContextAware {
 

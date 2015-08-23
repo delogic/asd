@@ -1,7 +1,7 @@
 package br.com.delogic.asd.repository.sql;
 
 import br.com.delogic.asd.repository.Criteria;
-import br.com.delogic.jfunk.Has;
+import br.com.delogic.asd.util.Has;
 
 /**
  * Will return the query with start row and end row for Oracle database.

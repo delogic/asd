@@ -1,7 +1,7 @@
 package br.com.delogic.asd.repository.sql;
 
 import br.com.delogic.asd.repository.Criteria;
-import br.com.delogic.jfunk.Has;
+import br.com.delogic.asd.util.Has;
 
 /**
  * Will add the start row and end end row filters to the query for MySQL

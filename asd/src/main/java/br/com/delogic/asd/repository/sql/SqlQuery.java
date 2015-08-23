@@ -1,7 +1,7 @@
 package br.com.delogic.asd.repository.sql;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,11 +23,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
 
+import br.com.delogic.asd.data.Result;
 import br.com.delogic.asd.repository.Criteria;
 import br.com.delogic.asd.repository.QueryRepository;
 import br.com.delogic.asd.repository.RepositoryData;
-import br.com.delogic.jfunk.Has;
-import br.com.delogic.jfunk.data.Result;
+import br.com.delogic.asd.util.Has;
 
 /**
  * A {@code Query} represents a SQL wrapped component which allows to execute

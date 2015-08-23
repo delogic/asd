@@ -7,7 +7,7 @@ import org.springframework.util.Assert;
 
 import br.com.delogic.asd.repository.Criteria;
 import br.com.delogic.asd.repository.sql.SqlQuery.PermittedParameterType;
-import br.com.delogic.jfunk.Has;
+import br.com.delogic.asd.util.Has;
 
 public class SqlQueryTester {
 

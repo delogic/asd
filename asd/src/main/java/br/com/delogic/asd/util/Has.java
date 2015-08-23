@@ -55,4 +55,15 @@ public class Has {
         return object != null;
     }
 
+    public static final boolean noContent(Object object) {
+        if (object instanceof String) {
+            return !content((String) object);
+        } else if (object instanceof Collection) {
+            return !content((Collection<?>) object);
+        } else if (object instanceof Object[]) {
+            return !content((Object[]) object);
+        }
+        return object == null;
+    }
+
 }
