@@ -1,4 +1,4 @@
-package br.com.delogic.asd.repository.jpa;
+package br.com.delogic.asd.repository.jpa.eclipselink;
 
 import org.eclipse.persistence.logging.AbstractSessionLog;
 import org.eclipse.persistence.logging.SessionLog;

@@ -1,44 +1,56 @@
-package br.com.delogic.asd.repository.jpa;
+package br.com.delogic.asd.repository.jpa.eclipselink;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import br.com.delogic.asd.repository.jpa.eclipselink.EclipselinkSlf4jLogger;
-
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "br.com.ribfer.gedor", repositoryFactoryBeanClass = EntityRepositoryFactoryBean.class)
-public class ConfiguracaoJpa {
+public class EclipseLinkJpaConfig {
+
+    private final String persistenceUnitName;
+    private final String persistenceXmlLocation;
+
+    public EclipseLinkJpaConfig(String persistenceUnitName, String persistenceXmlLocation) {
+        this.persistenceUnitName = persistenceUnitName;
+        this.persistenceXmlLocation = persistenceXmlLocation;
+    }
+
+    public EclipseLinkJpaConfig(String persistenceUnitName) {
+        this(persistenceUnitName, "classpath:/META-INF/persistence.xml");
+    }
 
     @Bean
-    JpaTransactionManager transacationManager(EntityManagerFactory emf) {
+    protected JpaTransactionManager transacationManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(@Named("sqlDS") DataSource ds) {
+    protected LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setPersistenceXmlLocation("classpath:/META-INF/persistence.xml");
-        emf.setPersistenceUnitName("asd");
-        emf.setDataSource(ds);
-        emf.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
+        emf.setPersistenceXmlLocation(persistenceXmlLocation);
+        emf.setPersistenceUnitName(persistenceUnitName);
+        emf.setDataSource(dataSource);
+        emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setJpaPropertyMap(getPropriedadesEclipselink());
         return emf;
     }
 
-    Map<String, ?> getPropriedadesEclipselink() {
+    protected JpaVendorAdapter getJpaVendorAdapter() {
+        return new EclipseLinkJpaVendorAdapter();
+    }
+
+    protected Map<String, ?> getPropriedadesEclipselink() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("eclipselink.logging.level", "ALL");
         map.put("eclipselink.logging.parameters", "true");

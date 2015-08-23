@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
-public class CustomRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable> extends
+public class EntityRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable> extends
     JpaRepositoryFactoryBean<R, T, I> {
 
     @SuppressWarnings("rawtypes")
@@ -30,7 +30,7 @@ public class CustomRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I ext
         @SuppressWarnings({ "rawtypes", "unchecked" })
         protected Object getTargetRepository(RepositoryMetadata metadata) {
 
-            return new CustomRepositoryImpl((Class<T>) metadata.getDomainType(), entityManager);
+            return new EntityRepositoryImpl((Class<T>) metadata.getDomainType(), entityManager);
         }
 
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {

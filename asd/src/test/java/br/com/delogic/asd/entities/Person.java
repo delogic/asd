@@ -1,4 +1,4 @@
-package br.com.delogic.entities;
+package br.com.delogic.asd.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

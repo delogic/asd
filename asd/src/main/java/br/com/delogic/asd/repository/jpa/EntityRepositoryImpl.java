@@ -7,13 +7,13 @@ import javax.persistence.EntityManager;
 
 import br.com.delogic.asd.data.Identifiable;
 
-public class CustomRepositoryImpl<T extends Identifiable<Integer>, ID extends Serializable> implements
+public class EntityRepositoryImpl<T extends Identifiable<Integer>, ID extends Serializable> implements
     EntityRepository<T, ID> {
 
     private final EntityManager em;
-    private final Class<T>      type;
+    private final Class<T> type;
 
-    public CustomRepositoryImpl(Class<T> domainClass, EntityManager em) {
+    public EntityRepositoryImpl(Class<T> domainClass, EntityManager em) {
         this.em = em;
         this.type = domainClass;
     }
