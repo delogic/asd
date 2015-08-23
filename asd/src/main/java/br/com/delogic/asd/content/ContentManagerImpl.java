@@ -27,7 +27,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
     private String                     path   = "/static-content/";
     private ServletContext             context;
 
-    private static final Logger        logger = LoggerFactory.getLogger(ContentManagerImpl.class);
+    private static final Logger        logger = LoggerFactory.getLogger("CONTEUDO");
 
     @PostConstruct
     public void init() throws Exception {
@@ -60,8 +60,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
     private String getFileExtension(String fileName) {
         if (fileName == null || !fileName.contains(".")
             || fileName.endsWith(".")) {
-            throw new IllegalArgumentException(
-                "File name doesn't have any extension");
+            return "";
         }
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }

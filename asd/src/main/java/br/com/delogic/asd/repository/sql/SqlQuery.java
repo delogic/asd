@@ -1,7 +1,7 @@
 package br.com.delogic.asd.repository.sql;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,39 +49,41 @@ import br.com.delogic.asd.util.Has;
  * "order by" statements to the end of the {@code Query}. <br>
  * <br>
  * The field "returnType" is required so {@code Query} objects can map the
- * result values into List<T> of the referenced type. The type can be a single
- * column like java.lang.String or java.lang.Integer, but can be also a POJO
- * with attributes, in which case it will map the attributes names from the POJO
- * to the columns names from the Query (case independent). This way the
- * {@code Query} object will return List<POJO>s of populated desired objects. <br>
+ * result values into {@code List<T>} of the referenced type. The type can be a
+ * single column like java.lang.String or java.lang.Integer, but can be also a
+ * POJO with attributes, in which case it will map the attributes names from the
+ * POJO to the columns names from the Query (case independent). This way the
+ * {@code Query} object will return {@code List<POJO>}s of populated desired
+ * objects. <br>
  * <br>
  * A regular XML query creation will be similar to the example below.
  *
  * <pre>
- *  &lt;bean id=&quot;userQuery&quot; class=&quot;br.com.delogic.yesql.Query&quot;
- *    p:select=&quot;u.id, u.name, u.birthDate&quot;
- *    p:from=&quot;users u&quot;
- *    p:returnType=&quot;mycompany.User&quot;&gt;
- *    &lt;property name=&quot;and&quot;&gt;
- *       &lt;map&gt;
- *          &lt;entry key=&quot;name:text&quot; value=&quot;u.name like :name&quot; /&gt;
- *          &lt;entry key=&quot;userId:number&quot; value=&quot;t.id = :userId&quot; /&gt;
- *       &lt;/map&gt;
- *    &lt;/property&gt;
- *    &lt;property name=&quot;orders&quot;&gt;
- *       &lt;map&gt;
- *          &lt;entry key=&quot;name&quot; value=&quot;name, id&quot; /&gt;
- *          &lt;entry key=&quot;BIRTH_DATE&quot; value=&quot;birthDate, name, id&quot; /&gt;
- *       &lt;/map&gt;
- *    &lt;/property&gt;
- * &lt;/bean&gt;
+ *   &lt;bean id=&quot;userQuery&quot; class=&quot;br.com.delogic.yesql.Query&quot;
+ *     p:select=&quot;u.id, u.name, u.birthDate&quot;
+ *     p:from=&quot;users u&quot;
+ *     p:returnType=&quot;mycompany.User&quot;&gt;
+ *     &lt;property name=&quot;and&quot;&gt;
+ *        &lt;map&gt;
+ *           &lt;entry key=&quot;name:text&quot; value=&quot;u.name like :name&quot; /&gt;
+ *           &lt;entry key=&quot;userId:number&quot; value=&quot;t.id = :userId&quot; /&gt;
+ *        &lt;/map&gt;
+ *     &lt;/property&gt;
+ *     &lt;property name=&quot;orders&quot;&gt;
+ *        &lt;map&gt;
+ *           &lt;entry key=&quot;name&quot; value=&quot;name, id&quot; /&gt;
+ *           &lt;entry key=&quot;BIRTH_DATE&quot; value=&quot;birthDate, name, id&quot; /&gt;
+ *        &lt;/map&gt;
+ *     &lt;/property&gt;
+ *  &lt;/bean&gt;
+ *</pre>
  *
- * <pre>
- * For more information check each method and the documentation online.
+ * <br>
+ *  For more information check each method and the documentation online.
  *
- * @author celio@delogic.com.br
+ *  @author celio@delogic.com.br
  *
- * @param <T>
+ *  @param <T>
  * - Type of the returnType parameter required.
  */
 public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
@@ -163,6 +165,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     private static final Logger                 logger                 = LoggerFactory.getLogger(SqlQuery.class);
 
+    public SqlQuery(DataSource ds, SqlQueryRangeBuilder rangeBuilder) {
+        this.dataSource = ds;
+        this.rangeBuilder = rangeBuilder;
+    }
+
     /**
      * Will initialize the {@code Query} object using the required statements:
      * select, from; the required parameter: returnType and a datasource. It'll
@@ -209,9 +216,6 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         } else if (returnType.equals(Integer.class)) {
             rowMapper = new IntegerRowMapper<T>();
-
-        } else if (returnType.equals(Long.class)) {
-            rowMapper = new LongRowMapper<T>();
 
         } else {
             rowMapper = BeanPropertyRowMapper.newInstance(returnType);
@@ -358,13 +362,17 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         maybeLogQuery(composedQuery, params);
 
-        long count = template.queryForLong(composedQuery, params);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Itens found:" + count);
-        }
+        //TODO precisa alterar parar usar novo repo do spring data
+        throw new UnsupportedOperationException("Precisa ser alterado para usar novos repos");
 
-        return count;
+//        long count = template.queryForLong(composedQuery, params);
+
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("Itens found:" + count);
+//        }
+//
+//        return count;
     }
 
     /**
@@ -561,6 +569,30 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         }
     }
 
+    public SqlQuery<T> filterableBy(Filter... ands) {
+        if (Has.content(ands)) {
+            Map<String, String> andMap = new HashMap<String, String>();
+            for (Filter filter : ands) {
+                andMap.put(filter.getKey(), filter.getValue());
+            }
+            setParameterizedAnd(andMap);
+        }
+
+        return this;
+    }
+
+    public SqlQuery<T> orderableBy(Order... orders) {
+        if (Has.content(orders)) {
+            Map<String, String> orderMap = new HashMap<String, String>();
+            for (Order order : orders) {
+                orderMap.put(order.getKey(), order.getValue());
+            }
+            setParameterizedOrderBy(orderMap);
+        }
+
+        return this;
+    }
+
     /**
      * Gets the select statement
      *
@@ -577,6 +609,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     public void setSelect(String select) {
         this.select = select;
+    }
+
+    public SqlQuery<T> select(String select) {
+        setSelect(select);
+        return this;
     }
 
     /**
@@ -597,6 +634,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         this.from = from;
     }
 
+    public SqlQuery<T> from(String from) {
+        setFrom(from);
+        return this;
+    }
+
     /**
      * Gets the where statement
      *
@@ -613,6 +655,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     public void setWhere(String where) {
         this.where = where;
+    }
+
+    public SqlQuery<T> where(String where) {
+        this.where = where;
+        return this;
     }
 
     /**
@@ -633,6 +680,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         this.groupBy = groupBy;
     }
 
+    public SqlQuery<T> groupBy(String groupBy) {
+        this.groupBy = groupBy;
+        return this;
+    }
+
     /**
      * Gets the order by statement
      *
@@ -649,6 +701,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public SqlQuery<T> orderBy(String orderBy) {
+        this.orderBy = orderBy;
+        return this;
     }
 
     /**
@@ -676,6 +733,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     public void setInto(Class<T> type) {
         this.returnType = type;
+    }
+
+    public SqlQuery<T> into(Class<T> type) {
+        this.returnType = type;
+        return this;
     }
 
     /**

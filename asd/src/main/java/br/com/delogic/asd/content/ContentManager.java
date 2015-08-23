@@ -60,7 +60,7 @@ public interface ContentManager {
      * @param name
      *            of the content
      * @return InputStream
-     * @throws Exceptions
+     * @throws Exception
      *             thrown by IO
      */
     InputStream getInpuStream(String name) throws Exception;

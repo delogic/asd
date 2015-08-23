@@ -25,7 +25,7 @@ public class DatabaseIterator implements Iterator<Long>, InitializingBean {
 
     @Override
     public Long next() {
-        return jdbcTemplate.queryForLong(query);
+        return jdbcTemplate.queryForObject(query, Long.class);
     }
 
     @Override
