@@ -238,15 +238,6 @@
         </dependency>
         <!-- SPRING -->
         <!-- =============================================== -->
-        <!-- TESTING -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- TESTING -->
-        <!-- =============================================== -->
         <!-- XML -->
         <dependency>
             <groupId>org.codehaus.castor</groupId>
@@ -258,6 +249,28 @@
         <!-- =============================================== -->
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- TESTING -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <optional>true</optional>
+            </dependency>
+            <!-- TESTING -->
+            <!-- =============================================== -->
+            <!-- DATABASE -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>9.3-1101-jdbc41</version>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <build>
         <plugins>
