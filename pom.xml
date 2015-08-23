@@ -8,7 +8,7 @@
     <artifactId>asd-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Arquitetura de Serviços Delogic - Parent</name>
+    <name>Arquitetura de ServiÃ§os Delogic - Parent</name>
 
     <modules>
         <module>asd</module>

@@ -7,7 +7,7 @@
     <groupId>br.com.delogic</groupId>
     <artifactId>asd</artifactId>
     <packaging>jar</packaging>
-    <name>Arquitetura de Serviços Delogic</name>
+    <name>Arquitetura de ServiÃ§os Delogic</name>
 
     <parent>
 		<groupId>br.com.delogic</groupId>
