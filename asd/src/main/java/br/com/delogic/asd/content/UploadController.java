@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,13 +27,13 @@ public class UploadController {
 
     public static class Files {
 
-        private final List<UploadedFile> files;
+        private final List<File> files;
 
-        public Files(List<UploadedFile> files) {
+        public Files(List<File> files) {
             this.files = files;
         }
 
-        public List<UploadedFile> getFiles() {
+        public List<File> getFiles() {
             return files;
         }
 
@@ -42,14 +43,11 @@ public class UploadController {
     @ResponseBody
     public Files upload(@RequestParam("file") MultipartFile multipartFile) {
         try {
-            String fileName = contentManager.create(
-                multipartFile.getInputStream(),
-                multipartFile.getOriginalFilename());
+            String fileName = contentManager.create(multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+            String fileUrl = contentManager.get(fileName);
 
-            String filePath = contentManager.get(fileName);
-
-            return new Files(Arrays.asList(new UploadedFile(fileName, multipartFile.getOriginalFilename(),
-                multipartFile.getSize(), filePath, null, null, null)));
+            return new Files(Arrays.asList(new File(fileName, multipartFile.getOriginalFilename(),
+                multipartFile.getSize(), fileUrl)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,13 +60,11 @@ public class UploadController {
         @RequestParam("nome") String nome,
         HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // TODO verificar outro jeito de obter o mime type
-        // ServletContext context = request.getServletContext();
         InputStream is = contentManager.getInpuStream(file);
-        // response.setContentType(context.getMimeType(file));
+        ServletContext context = request.getSession().getServletContext();
+        response.setContentType(context.getMimeType(file));
 
-        response.addHeader("Content-Disposition",
-            disposition + ";filename=" + getNomeComExtensao(nome, file));
+        response.addHeader("Content-Disposition", disposition + ";filename=" + getNomeComExtensao(nome, file));
         IOUtils.copy(is, response.getOutputStream());
         response.flushBuffer();
     }
