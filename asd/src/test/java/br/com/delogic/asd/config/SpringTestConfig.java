@@ -3,6 +3,7 @@ package br.com.delogic.asd.config;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -11,10 +12,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 
+import br.com.delogic.asd.content.ContentController;
+import br.com.delogic.asd.content.ContentManager;
+import br.com.delogic.asd.content.ContentManagerImpl;
+import br.com.delogic.asd.content.TimeIterator;
 import br.com.delogic.asd.repository.jpa.EntityRepositoryFactoryBean;
 import br.com.delogic.asd.repository.jpa.eclipselink.EclipseLinkJpaConfig;
 
@@ -88,6 +94,22 @@ public class SpringTestConfig extends EclipseLinkJpaConfig {
         EclipseLinkJpaVendorAdapter adapter = (EclipseLinkJpaVendorAdapter) super.getJpaVendorAdapter();
         adapter.setGenerateDdl(true);
         return adapter;
+    }
+
+    @Bean
+    public ContentManager contentManager(ApplicationContext ctx, ServletContext servletContext) {
+        return new ContentManagerImpl(ctx.getResource("file:#{systemProperties['java.io.tmpdir']}/temp"), new TimeIterator(),
+            servletContext);
+    }
+
+    @Bean
+    public ContentController contentController(ContentManager contentManager) {
+        return new ContentController(contentManager);
+    }
+
+    @Bean
+    public ServletContext mockServletContext() {
+        return new MockServletContext("/asd");
     }
 
 }

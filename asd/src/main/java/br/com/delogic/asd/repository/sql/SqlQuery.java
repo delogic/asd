@@ -76,95 +76,94 @@ import br.com.delogic.asd.util.Has;
  *        &lt;/map&gt;
  *     &lt;/property&gt;
  *  &lt;/bean&gt;
- *</pre>
+ * </pre>
  *
  * <br>
- *  For more information check each method and the documentation online.
+ * For more information check each method and the documentation online.
  *
- *  @author celio@delogic.com.br
+ * @author celio@delogic.com.br
  *
- *  @param <T>
- * - Type of the returnType parameter required.
+ * @param <T>
+ *            - Type of the returnType parameter required.
  */
 public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
     /**
      * Querie's select statement without the "select" reserved word
      */
-    private String                              select;
+    private String select;
 
     /**
      * Querie's from statement without the "from" reserved word
      */
-    private String                              from;
+    private String from;
 
     /**
      * Querie's where statement without the "where" reserved word
      */
-    private String                              where;
+    private String where;
 
     /**
      * Querie's group by statement without the "group by" reserved word
      */
-    private String                              groupBy;
+    private String groupBy;
 
     /**
      * Querie's order by statement without the "order by" reserved word
      */
-    private String                              orderBy;
+    private String orderBy;
 
     /**
      * List of possible "and" statements which will be appended according to the
      * parameters sent
      */
-    private Map<String, String>                 parameterizedAnd;
+    private Map<String, String> parameterizedAnd;
 
     /**
      * List of possible "order by" statements which will be appened according to
      * the parameters sent
      */
-    private Map<String, String>                 parameterizedOrderBy;
+    private Map<String, String> parameterizedOrderBy;
 
     /**
      * This Query return type. Will be used to map the {@code ResultSet} vlaues
      * to the appropriate fields
      */
-    private Class<T>                            returnType;
+    private Class<T> returnType;
 
     /*
      * Internal control of parameter types
      */
-    private Map<String, PermittedParameterType> registeredParameters   = new HashMap<String, SqlQuery.PermittedParameterType>();
+    private Map<String, PermittedParameterType> registeredParameters = new HashMap<String, SqlQuery.PermittedParameterType>();
 
     /*
      * Internal control of p
      */
     private Map<String, PermittedParameterType> mandatoryParameters;
 
-    private static final String                 ORDER_STATEMENT        = " order by ";
-    private static final String                 SELECT_STATEMENT       = "select ";
-    private static final String                 SELECT_COUNT_STATEMENT = "select count(*) ";
-    private static final String                 FROM_STATEMENT         = " from ";
-    private static final String                 WHERE_STATEMENT        = " where ";
-    private static final String                 GROUP_STATEMENT        = " group by ";
-    private static final String                 AND_OPERATOR           = " and ";
+    private static final String ORDER_STATEMENT = " order by ";
+    private static final String SELECT_STATEMENT = "select ";
+    private static final String SELECT_COUNT_STATEMENT = "select count(*) ";
+    private static final String FROM_STATEMENT = " from ";
+    private static final String WHERE_STATEMENT = " where ";
+    private static final String GROUP_STATEMENT = " group by ";
+    private static final String AND_OPERATOR = " and ";
 
-    private NamedParameterJdbcTemplate          template;
-    private RowMapper<T>                        rowMapper;
+    private NamedParameterJdbcTemplate template;
+    private RowMapper<T> rowMapper;
 
-    @Inject
-    private SqlQueryRangeBuilder                rangeBuilder;
+    private final SqlQueryRangeBuilder rangeBuilder;
 
-    @Inject
-    private DataSource                          dataSource;
+    private final DataSource dataSource;
 
-    private boolean                             initialized            = false;
+    private boolean initialized = false;
 
     /**
      * Logger using slf4j facade
      */
-    private static final Logger                 logger                 = LoggerFactory.getLogger(SqlQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(SqlQuery.class);
 
+    @Inject
     public SqlQuery(DataSource ds, SqlQueryRangeBuilder rangeBuilder) {
         this.dataSource = ds;
         this.rangeBuilder = rangeBuilder;
@@ -362,17 +361,16 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         maybeLogQuery(composedQuery, params);
 
-
-        //TODO precisa alterar parar usar novo repo do spring data
+        // TODO precisa alterar parar usar novo repo do spring data
         throw new UnsupportedOperationException("Precisa ser alterado para usar novos repos");
 
-//        long count = template.queryForLong(composedQuery, params);
+        // long count = template.queryForLong(composedQuery, params);
 
-//        if (logger.isDebugEnabled()) {
-//            logger.debug("Itens found:" + count);
-//        }
-//
-//        return count;
+        // if (logger.isDebugEnabled()) {
+        // logger.debug("Itens found:" + count);
+        // }
+        //
+        // return count;
     }
 
     /**
@@ -759,15 +757,6 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     }
 
     /**
-     * Sets the datasource
-     *
-     * @param dataSource
-     */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    /**
      * Gets the parameterized orders statements
      *
      * @return
@@ -817,15 +806,6 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     public SqlQueryRangeBuilder getRangeBuilder() {
         return rangeBuilder;
-    }
-
-    /**
-     * Sets the query range builder
-     *
-     * @param rangeBuilder
-     */
-    public void setRangeBuilder(SqlQueryRangeBuilder rangeBuilder) {
-        this.rangeBuilder = rangeBuilder;
     }
 
     /**

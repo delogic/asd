@@ -14,24 +14,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.context.ServletContextAware;
 
 import br.com.delogic.asd.util.Has;
 
-public class ContentManagerImpl implements ContentManager, ServletContextAware {
+public class ContentManagerImpl implements ContentManager {
 
     private final Resource directory;
     private final Iterator<? extends Object> iterator;
+    private final ServletContext context;
     private String path = "/static-content/";
     private String absolutePath;
     private String contextPath;
-    private ServletContext context;
 
     private static final Logger logger = LoggerFactory.getLogger("CONTENT");
 
-    public ContentManagerImpl(Resource contentDirectory, Iterator<? extends Object> iterator) {
+    public ContentManagerImpl(Resource contentDirectory, Iterator<? extends Object> iterator, ServletContext servletContext) {
         this.directory = contentDirectory;
         this.iterator = iterator;
+        this.context = servletContext;
     }
 
     @PostConstruct
@@ -102,11 +102,6 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
     public ContentManagerImpl setPath(String path) {
         this.path = path;
         return this;
-    }
-
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        this.context = servletContext;
     }
 
 }
