@@ -41,7 +41,7 @@ public class ContentController {
         this.contentManager = contentManager;
     }
 
-    @RequestMapping(value = "${content_upload_path:/upload}", method = { RequestMethod.POST, RequestMethod.PUT })
+    @RequestMapping(value = "/upload", method = { RequestMethod.POST, RequestMethod.PUT })
     @ResponseBody
     public Files upload(@RequestParam("file") MultipartFile multipartFile) {
         try {
@@ -55,7 +55,7 @@ public class ContentController {
         }
     }
 
-    @RequestMapping(value = "${content_download_path:/download}", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
+    @RequestMapping(value = "/download", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
     public @ResponseBody void download(
         @RequestParam("file") String file,
         @RequestParam(value = "disposition", defaultValue = "attachment") String disposition,
