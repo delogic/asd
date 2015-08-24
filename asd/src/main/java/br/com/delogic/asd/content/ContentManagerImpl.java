@@ -20,18 +20,23 @@ import br.com.delogic.asd.util.Has;
 
 public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
-    private Resource directory;
-    private String absolutePath;
-    private Iterator<? extends Object> iterator;
-    private String contextPath;
+    private final Resource directory;
+    private final Iterator<? extends Object> iterator;
     private String path = "/static-content/";
+    private String absolutePath;
+    private String contextPath;
     private ServletContext context;
 
     private static final Logger logger = LoggerFactory.getLogger("CONTENT");
 
+    public ContentManagerImpl(Resource contentDirectory, Iterator<? extends Object> iterator) {
+        this.directory = contentDirectory;
+        this.iterator = iterator;
+    }
+
     @PostConstruct
     public void init() throws Exception {
-        absolutePath = directory.getFile().getAbsolutePath();
+        this.absolutePath = directory.getFile().getAbsolutePath();
         contextPath = context.getContextPath();
     }
 
@@ -86,24 +91,17 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
         return directory;
     }
 
-    public void setDirectory(Resource directory) {
-        this.directory = directory;
-    }
-
     public Iterator<? extends Object> getIterator() {
         return iterator;
-    }
-
-    public void setIterator(Iterator<? extends Object> iterator) {
-        this.iterator = iterator;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public ContentManagerImpl setPath(String path) {
         this.path = path;
+        return this;
     }
 
     @Override

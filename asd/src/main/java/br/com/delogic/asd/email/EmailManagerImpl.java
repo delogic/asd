@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import javax.inject.Inject;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -24,12 +23,15 @@ import br.com.delogic.asd.util.Has;
 
 public class EmailManagerImpl implements EmailManager {
 
-    @Inject
-    private JavaMailSender      mailSender;
+    private JavaMailSender mailSender;
 
-    private static final Logger log      = LoggerFactory.getLogger(EmailManagerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EmailManagerImpl.class);
 
-    private final Executor      executor = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newSingleThreadExecutor();
+
+    public EmailManagerImpl(JavaMailSender javaMailSender) {
+        this.mailSender = javaMailSender;
+    }
 
     public boolean send(final EmailAddress from, final EmailAddress replyTo, final EmailContent content,
         final EmailAddress to, final EmailAddress... tos) {

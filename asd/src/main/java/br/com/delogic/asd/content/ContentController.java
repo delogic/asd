@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping
-public class UploadController {
-
-    @Inject
-    private ContentManager contentManager;
+public class ContentController {
 
     public static class Files {
 
@@ -37,6 +33,12 @@ public class UploadController {
             return files;
         }
 
+    }
+
+    private final ContentManager contentManager;
+
+    public ContentController(ContentManager contentManager) {
+        this.contentManager = contentManager;
     }
 
     @RequestMapping(value = "/upload", method = { RequestMethod.POST, RequestMethod.PUT })
@@ -53,18 +55,18 @@ public class UploadController {
         }
     }
 
-    @RequestMapping(value = "/download", method = { RequestMethod.GET })
+    @RequestMapping(value = "/download", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
     public @ResponseBody void download(
         @RequestParam("file") String file,
         @RequestParam(value = "disposition", defaultValue = "attachment") String disposition,
-        @RequestParam("nome") String nome,
+        @RequestParam("name") String name,
         HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         InputStream is = contentManager.getInpuStream(file);
         ServletContext context = request.getSession().getServletContext();
         response.setContentType(context.getMimeType(file));
 
-        response.addHeader("Content-Disposition", disposition + ";filename=" + getNomeComExtensao(nome, file));
+        response.addHeader("Content-Disposition", disposition + ";filename=" + getNomeComExtensao(name, file));
         IOUtils.copy(is, response.getOutputStream());
         response.flushBuffer();
     }
@@ -81,10 +83,6 @@ public class UploadController {
 
     public ContentManager getUploadManager() {
         return contentManager;
-    }
-
-    public void setUploadManager(ContentManager uploadManager) {
-        this.contentManager = uploadManager;
     }
 
 }
