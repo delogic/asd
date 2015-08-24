@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.delogic</groupId>
-    <artifactId>asd-parent</artifactId>
+    <artifactId>asd</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Arquitetura de Serviços Delogic - Parent</name>
+    <version>0.0.2-SNAPSHOT</version>
+    <name>Arquitetura de Serviços Delogic</name>
 
     <modules>
-        <module>asd</module>
+        <module>asd-core</module>
     </modules>
 
     <properties>
@@ -18,11 +18,12 @@
         <org.springframework.version>4.2.0.RELEASE</org.springframework.version>
         <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
         <jackson.version>2.2.3</jackson.version>
+        <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>ddMMyy.HHmmss</maven.build.timestamp.format>
-        <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
     </properties>
 
     <dependencies>
@@ -54,18 +55,11 @@
             <version>1.2.14</version>
         </dependency>
 
+
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-            <!-- =============================================== -->
-            <!-- AMAZON WEB SERVICES API -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk</artifactId>
-                <version>1.4.5</version>
-            </dependency>
-            <!-- AMAZON WEB SERVICES API -->
             <!-- =============================================== -->
             <!-- AOP -->
             <dependency>
@@ -83,15 +77,8 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>1.6.11</version>
             </dependency>
-            <!-- AOP -->
             <!-- =============================================== -->
             <!-- APACHE COMMONS -->
-            <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>1.4</version>
-                <scope>test</scope>
-            </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -118,15 +105,6 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.8</version>
             </dependency>
-            <!-- APACHE COMMONS -->
-            <!-- =============================================== -->
-            <!-- DATABASE -->
-            <!-- <dependency> -->
-            <!-- <groupId>mysql</groupId> -->
-            <!-- <artifactId>mysql-connector-java</artifactId> -->
-            <!-- <version>5.1.18</version> -->
-            <!-- </dependency> -->
-            <!-- DATABASE -->
             <!-- =============================================== -->
             <!-- JSON -->
             <dependency>
@@ -144,25 +122,6 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-            <!-- JSON -->
-            <!-- =============================================== -->
-            <!-- PERSISTENCE -->
-            <dependency>
-                <groupId>org.eclipse.persistence</groupId>
-                <artifactId>javax.persistence</artifactId>
-                <version>2.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.persistence</groupId>
-                <artifactId>org.eclipse.persistence.core</artifactId>
-                <version>${org.eclisepselink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.persistence</groupId>
-                <artifactId>org.eclipse.persistence.jpa</artifactId>
-                <version>${org.eclisepselink.version}</version>
-            </dependency>
-            <!-- PERSISTENCE -->
             <!-- =============================================== -->
             <!-- SPRING -->
             <dependency>
@@ -222,7 +181,6 @@
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data-jpa.version}</version>
             </dependency>
-            <!-- SPRING -->
             <!-- =============================================== -->
             <!-- JAVA APIS -->
             <dependency>
@@ -232,20 +190,22 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>1.4.3</version>
             </dependency>
-            <!-- JAVA APIS -->
             <!-- =============================================== -->
             <!-- TESTING -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
-                <optional>true</optional>
             </dependency>
-            <!-- TESTING -->
             <!-- =============================================== -->
             <!-- DATABASE -->
             <dependency>
@@ -260,14 +220,33 @@
                 <version>8.0.9</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
-                <version>1.2</version>
-            </dependency>
-            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>5.1.1.Final</version>
+            </dependency>
+            <!-- =============================================== -->
+            <!-- PERSISTENCE -->
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>javax.persistence</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.core</artifactId>
+                <version>${org.eclisepselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.jpa</artifactId>
+                <version>${org.eclisepselink.version}</version>
+            </dependency>
+            <!-- =============================================== -->
+            <!-- AMAZON WEB SERVICES API -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk</artifactId>
+                <version>1.4.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -308,8 +287,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
             </plugins>

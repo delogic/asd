@@ -2,15 +2,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>asd</artifactId>
+    <artifactId>asd-core</artifactId>
     <packaging>jar</packaging>
-    <name>Arquitetura de Serviços Delogic</name>
+    <name>Arquitetura de Serviços Delogic - Core</name>
 
     <parent>
         <groupId>br.com.delogic</groupId>
-        <artifactId>asd-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>asd</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
