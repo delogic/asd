@@ -11,6 +11,8 @@
 
     <modules>
         <module>asd-core</module>
+        <module>asd-database</module>
+        <module>asd-web</module>
     </modules>
 
     <properties>
