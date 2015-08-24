@@ -20,14 +20,14 @@ import br.com.delogic.asd.util.Has;
 
 public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
-    private Resource                   directory;
-    private String                     absolutePath;
+    private Resource directory;
+    private String absolutePath;
     private Iterator<? extends Object> iterator;
-    private String                     contextPath;
-    private String                     path   = "/static-content/";
-    private ServletContext             context;
+    private String contextPath;
+    private String path = "/static-content/";
+    private ServletContext context;
 
-    private static final Logger        logger = LoggerFactory.getLogger("CONTEUDO");
+    private static final Logger logger = LoggerFactory.getLogger("CONTENT");
 
     @PostConstruct
     public void init() throws Exception {

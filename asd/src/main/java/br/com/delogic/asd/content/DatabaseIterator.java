@@ -12,11 +12,11 @@ import br.com.delogic.asd.util.Has;
 
 public class DatabaseIterator implements Iterator<Long>, InitializingBean {
 
-    private String       query;
+    private String query;
     private JdbcTemplate jdbcTemplate;
 
     @Inject
-    private DataSource   dataSource;
+    private DataSource dataSource;
 
     @Override
     public boolean hasNext() {
