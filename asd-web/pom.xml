@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>asd-web</artifactId>
     <packaging>pom</packaging>
-    <name>Arquitetura de Serviços Delogic - Web Dependencies</name>
+    <name>ASD - Web Dependencies</name>
 
     <parent>
         <groupId>br.com.delogic</groupId>

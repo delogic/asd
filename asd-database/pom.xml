@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>asd-database</artifactId>
     <packaging>pom</packaging>
-    <name>Arquitetura de Serviços Delogic - Database Dependencies</name>
+    <name>ASD - Database Dependencies</name>
 
     <parent>
         <groupId>br.com.delogic</groupId>
@@ -49,6 +49,11 @@
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>3.0</version>
         </dependency>
     </dependencies>
 

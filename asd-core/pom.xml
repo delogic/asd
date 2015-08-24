@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>asd-core</artifactId>
     <packaging>jar</packaging>
-    <name>Arquitetura de Serviços Delogic - Core</name>
+    <name>ASD - Core and Code</name>
 
     <parent>
         <groupId>br.com.delogic</groupId>
@@ -34,12 +34,6 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>commons-fileupload</groupId> -->
-<!--             <artifactId>commons-fileupload</artifactId> -->
-<!--             <version>1.2.1</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -52,23 +46,6 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
-        <!-- =============================================== -->
-<!--         JSON -->
-<!--         <dependency> -->
-<!--             <groupId>com.fasterxml.jackson.core</groupId> -->
-<!--             <artifactId>jackson-core</artifactId> -->
-<!--             <version>${jackson.version}</version> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>com.fasterxml.jackson.core</groupId> -->
-<!--             <artifactId>jackson-databind</artifactId> -->
-<!--             <version>${jackson.version}</version> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>com.fasterxml.jackson.core</groupId> -->
-<!--             <artifactId>jackson-annotations</artifactId> -->
-<!--             <version>${jackson.version}</version> -->
-<!--         </dependency> -->
         <!-- =============================================== -->
         <!-- SPRING -->
         <dependency>
@@ -83,81 +60,20 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>org.springframework</groupId> -->
-<!--             <artifactId>spring-web</artifactId> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.springframework</groupId> -->
-<!--             <artifactId>spring-tx</artifactId> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.springframework</groupId> -->
-<!--             <artifactId>spring-orm</artifactId> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.springframework</groupId> -->
-<!--             <artifactId>spring-webmvc</artifactId> -->
-<!--         </dependency> -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-<!--         <dependency> -->
-<!--             <groupId>org.springframework.data</groupId> -->
-<!--             <artifactId>spring-data-jpa</artifactId> -->
-<!--         </dependency> -->
         <!-- =============================================== -->
         <!-- JAVA APIS -->
-<!--         <dependency> -->
-<!--             <groupId>javax.servlet</groupId> -->
-<!--             <artifactId>javax.servlet-api</artifactId> -->
-<!--             <optional>true</optional> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>javax.servlet</groupId> -->
-<!--             <artifactId>jstl</artifactId> -->
-<!--         </dependency> -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
         </dependency>
         <!-- =============================================== -->
-        <!-- TESTING -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- =============================================== -->
-        <!-- DATABASE -->
-<!--         <dependency> -->
-<!--             <groupId>org.postgresql</groupId> -->
-<!--             <artifactId>postgresql</artifactId> -->
-<!--             <optional>true</optional> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.apache.tomcat</groupId> -->
-<!--             <artifactId>tomcat-jdbc</artifactId> -->
-<!--         </dependency> -->
+        <!-- VAILDATION -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
         <!-- =============================================== -->
         <!-- PERSISTENCE -->
-<!--         <dependency> -->
-<!--             <groupId>org.eclipse.persistence</groupId> -->
-<!--             <artifactId>javax.persistence</artifactId> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.eclipse.persistence</groupId> -->
-<!--             <artifactId>org.eclipse.persistence.core</artifactId> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.eclipse.persistence</groupId> -->
-<!--             <artifactId>org.eclipse.persistence.jpa</artifactId> -->
-<!--         </dependency> -->
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>asd-database</artifactId>
@@ -165,9 +81,20 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+        <!-- =============================================== -->
+        <!-- WEB -->
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>asd-web</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <!-- =============================================== -->
+        <!-- TEST -->
+        <dependency>
+            <groupId>br.com.delogic</groupId>
+            <artifactId>asd-test</artifactId>
             <version>0.0.2-SNAPSHOT</version>
             <type>pom</type>
             <scope>provided</scope>
