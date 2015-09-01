@@ -361,16 +361,13 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         maybeLogQuery(composedQuery, params);
 
-        // TODO precisa alterar parar usar novo repo do spring data
-        throw new UnsupportedOperationException("Precisa ser alterado para usar novos repos");
+        long count = template.queryForObject(composedQuery, params, Long.class);
 
-        // long count = template.queryForLong(composedQuery, params);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Itens found:" + count);
+        }
 
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("Itens found:" + count);
-        // }
-        //
-        // return count;
+        return count;
     }
 
     /**
