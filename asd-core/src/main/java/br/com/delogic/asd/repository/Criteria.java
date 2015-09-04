@@ -197,7 +197,7 @@ public class Criteria {
     }
 
     /**
-     * Sets the iten´s number per page
+     * Sets the itens per page and limit per pager
      *
      * @param pageNumber
      * @param itensPerPage
@@ -205,6 +205,7 @@ public class Criteria {
 
     public void setPage(int pageNumber, int itensPerPage){
         setOffset(new Long(pageNumber * itensPerPage - itensPerPage));
+        setLimit(new Long(itensPerPage));
     }
 
     /**
