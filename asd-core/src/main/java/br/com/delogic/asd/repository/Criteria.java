@@ -197,6 +197,17 @@ public class Criteria {
     }
 
     /**
+     * Sets the iten´s number per page
+     *
+     * @param pageNumber
+     * @param itensPerPage
+     */
+
+    public void setPage(int pageNumber, int itensPerPage){
+        setOffset(new Long(pageNumber * itensPerPage - itensPerPage));
+    }
+
+    /**
      * Gets the amount of rows to be returned.
      *
      * @return
