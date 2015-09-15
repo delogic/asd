@@ -197,6 +197,18 @@ public class Criteria {
     }
 
     /**
+     * Sets the itens per page and limit per pager
+     *
+     * @param pageNumber
+     * @param itensPerPage
+     */
+
+    public void setPage(int pageNumber, int itensPerPage){
+        setOffset(new Long(pageNumber * itensPerPage - itensPerPage));
+        setLimit(new Long(itensPerPage));
+    }
+
+    /**
      * Gets the amount of rows to be returned.
      *
      * @return
