@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.activation.MimetypesFileTypeMap;
 
-import br.com.delogic.jfunk.Has;
+import br.com.delogic.asd.util.Has;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
