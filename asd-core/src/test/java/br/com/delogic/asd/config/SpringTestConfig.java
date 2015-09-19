@@ -28,8 +28,9 @@ import br.com.delogic.asd.repository.jpa.eclipselink.EclipseLinkJpaConfig;
 @EnableJpaRepositories(basePackages = "br.com.delogic.asd", repositoryFactoryBeanClass = EntityRepositoryFactoryBean.class)
 public class SpringTestConfig extends EclipseLinkJpaConfig {
 
-    public SpringTestConfig() {
-        super("asd");
+    @Override
+    public String getPersistenceUnitName() {
+        return "asd";
     }
 
     @Bean(name = "rootDataSource")

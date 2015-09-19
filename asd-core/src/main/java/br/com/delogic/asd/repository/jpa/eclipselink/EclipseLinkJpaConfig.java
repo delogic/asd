@@ -16,18 +16,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class EclipseLinkJpaConfig {
+public abstract class EclipseLinkJpaConfig {
 
-    private final String persistenceUnitName;
-    private final String persistenceXmlLocation;
+    public abstract String getPersistenceUnitName();
 
-    public EclipseLinkJpaConfig(String persistenceUnitName, String persistenceXmlLocation) {
-        this.persistenceUnitName = persistenceUnitName;
-        this.persistenceXmlLocation = persistenceXmlLocation;
-    }
-
-    public EclipseLinkJpaConfig(String persistenceUnitName) {
-        this(persistenceUnitName, "classpath:/META-INF/persistence.xml");
+    public String getPersistenceXmlLocation() {
+        return "classpath:/META-INF/persistence.xml";
     }
 
     @Bean
@@ -38,8 +32,8 @@ public class EclipseLinkJpaConfig {
     @Bean
     protected LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setPersistenceXmlLocation(persistenceXmlLocation);
-        emf.setPersistenceUnitName(persistenceUnitName);
+        emf.setPersistenceXmlLocation(getPersistenceXmlLocation());
+        emf.setPersistenceUnitName(getPersistenceUnitName());
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setJpaPropertyMap(getPropriedadesEclipselink());
