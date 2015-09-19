@@ -17,9 +17,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
-import br.com.delogic.asd.util.Convertable;
-import br.com.delogic.asd.util.Converter;
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Convert;
+import br.com.delogic.jfunk.Converter;
+import br.com.delogic.jfunk.Has;
 
 public class EmailManagerImpl implements EmailManager {
 
@@ -43,10 +43,10 @@ public class EmailManagerImpl implements EmailManager {
             emailTos.addAll(Arrays.asList(tos));
         }
 
-        final List<InternetAddress> addressesTo = new Converter().list(emailTos,
-            new Convertable<EmailAddress, InternetAddress>() {
+        final List<InternetAddress> addressesTo = Convert.from(emailTos).toListOf(
+            new Converter<EmailAddress, InternetAddress>() {
                 @Override
-                public InternetAddress convert(EmailAddress in) {
+                public InternetAddress to(EmailAddress in) {
                     try {
                         return new InternetAddress(in.getAddress(), in.getName());
                     } catch (UnsupportedEncodingException e) {

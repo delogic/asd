@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 public class ContentManagerImpl implements ContentManager {
 

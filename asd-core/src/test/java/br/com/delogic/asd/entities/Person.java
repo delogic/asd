@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-import br.com.delogic.asd.data.Identity;
+import br.com.delogic.jfunk.data.Identity;
 
 @Entity
 public class Person extends Identity<Integer> {

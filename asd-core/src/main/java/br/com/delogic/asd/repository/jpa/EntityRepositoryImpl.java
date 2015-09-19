@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 
-import br.com.delogic.asd.data.Identifiable;
+import br.com.delogic.jfunk.data.Identifiable;
 
 public class EntityRepositoryImpl<T extends Identifiable<Integer>, ID extends Serializable> implements
     EntityRepository<T, ID> {

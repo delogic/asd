@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 public class DatabaseIterator implements Iterator<Long>, InitializingBean {
 

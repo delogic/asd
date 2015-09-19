@@ -7,7 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 /**
  * Parameters which can be used with a {@code QueryRepository} get methods,

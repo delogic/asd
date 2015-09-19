@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.springframework.core.io.Resource;
 
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 public class FilePropertyManagerImpl implements PropertyManager {
 

@@ -1,7 +1,7 @@
 package br.com.delogic.asd.repository.sql;
 
 import br.com.delogic.asd.repository.Criteria;
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 /**
  * Will add the start row and end end row filters to the query for MySQL
@@ -14,7 +14,7 @@ public class MySQLSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
 
     public String buildRangeQuery(String query, Criteria criteria) {
 
-        if (Has.content(criteria.getOffset(), criteria.getLimit())) {
+        if (Has.content(criteria.getOffset()) && Has.content(criteria.getLimit())) {
 
             long offset = criteria.getOffset() != null ? criteria.getOffset() : 0;
             long limit = criteria.getLimit() != null ? criteria.getLimit() : Long.MAX_VALUE;

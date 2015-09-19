@@ -2,7 +2,7 @@ package br.com.delogic.asd.repository;
 
 import java.util.List;
 
-import br.com.delogic.asd.data.Result;
+import br.com.delogic.jfunk.data.Result;
 
 public interface QueryRepository<E> {
 

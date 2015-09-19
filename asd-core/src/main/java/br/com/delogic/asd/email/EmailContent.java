@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import br.com.delogic.asd.util.Has;
+import br.com.delogic.jfunk.Has;
 
 public class EmailContent {
 
@@ -49,7 +49,7 @@ public class EmailContent {
     }
 
     public String getHtmlContent() {
-        if (Has.noContent(htmlContent) && Has.content(url)) {
+        if (!Has.content(htmlContent) && Has.content(url)) {
             htmlContent = getContent(url);
         }
         return htmlContent;

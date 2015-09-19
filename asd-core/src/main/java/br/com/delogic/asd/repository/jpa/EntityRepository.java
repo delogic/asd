@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
-import br.com.delogic.asd.data.Identifiable;
+import br.com.delogic.jfunk.data.Identifiable;
 
 /**
  * Repositório base para criação das entidades do sistema. Deverá ser extendido
