@@ -1,4 +1,4 @@
-package br.com.delogic.asd.repository.jpa;
+package br.com.delogic.asd.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,12 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import br.com.delogic.asd.repository.jpa.VersionedEntity;
+
 @Entity
-public class Person2 extends BaseEntity<Integer> {
+@SuppressWarnings("serial")
+public class VersionedPerson extends VersionedEntity<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqPerson")
-    @SequenceGenerator(allocationSize = 1, initialValue = 0, name = "seqPerson", sequenceName = "seq_person")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqAuditedEntity")
+    @SequenceGenerator(allocationSize = 1, initialValue = 0, name = "seqAuditedEntity", sequenceName = "seq_audited_entity")
     private Integer id;
 
     @Column(length = 100)

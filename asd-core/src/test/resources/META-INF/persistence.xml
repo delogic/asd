@@ -6,6 +6,8 @@
 
     <persistence-unit name="asd" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>br.com.delogic.asd.entities.Person</class>
+        <class>br.com.delogic.asd.entities.AuditedPerson</class>
         <validation-mode>NONE</validation-mode>
         <properties>
             <property name="eclipselink.weaving" value="static" />

@@ -8,14 +8,19 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import br.com.delogic.asd.datetime.DateTimeManager;
+import br.com.delogic.asd.datetime.LocalDateTimeManager;
+
 @Configuration
 @EnableTransactionManagement
+@EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeManager")
 public abstract class EclipseLinkJpaConfig {
 
     public abstract String getPersistenceUnitName();
@@ -51,6 +56,11 @@ public abstract class EclipseLinkJpaConfig {
         map.put("eclipselink.logging.exceptions", "true");
         map.put("eclipselink.logging.logger", EclipselinkSlf4jLogger.class.getName());
         return map;
+    }
+
+    @Bean
+    protected DateTimeManager auditingDateTimeManager() {
+        return new LocalDateTimeManager();
     }
 
 }
