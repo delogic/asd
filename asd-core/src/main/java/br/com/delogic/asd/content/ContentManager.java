@@ -2,6 +2,8 @@ package br.com.delogic.asd.content;
 
 import java.io.InputStream;
 
+import br.com.delogic.asd.exception.ContentException;
+
 /**
  * Manages the dynamic content in the application. Files uploaded, images, etc.
  * This service is mainly used by {@code UploadController} for storing files
@@ -14,6 +16,10 @@ import java.io.InputStream;
  *
  */
 public interface ContentManager {
+
+    public static final ContentException NO_CONTENT_TO_ZIP = new ContentException("No files were passed to be zipped");
+
+    public static final ContentException REPEATED_FILE_NAMES = new ContentException();
 
     /**
      * Stores the content with a new name. This is called by
@@ -64,5 +70,17 @@ public interface ContentManager {
      *             thrown by IO
      */
     InputStream getInpuStream(String name) throws Exception;
+
+    /**
+     * Creates a zip and returns its file name. This name can be used to get a
+     * new InputStream to the zipped package or to get the URI.
+     *
+     * The file will be stored automatically and the file name will follow the
+     * convention of the implementation.
+     *
+     * @param contentZipEntries
+     * @return The zip file name to get and download the new zipped content.
+     */
+    String createZip(ContentZipEntry... contentZipEntries);
 
 }

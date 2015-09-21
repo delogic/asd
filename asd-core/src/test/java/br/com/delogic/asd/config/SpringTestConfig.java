@@ -1,5 +1,6 @@
 package br.com.delogic.asd.config;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.inject.Named;
@@ -19,7 +20,7 @@ import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 
 import br.com.delogic.asd.content.ContentController;
 import br.com.delogic.asd.content.ContentManager;
-import br.com.delogic.asd.content.ContentManagerImpl;
+import br.com.delogic.asd.content.LocalContentManager;
 import br.com.delogic.asd.content.TimeIterator;
 import br.com.delogic.asd.repository.jpa.EntityRepositoryFactoryBean;
 import br.com.delogic.asd.repository.jpa.eclipselink.EclipseLinkJpaConfig;
@@ -98,9 +99,9 @@ public class SpringTestConfig extends EclipseLinkJpaConfig {
     }
 
     @Bean
-    public ContentManager contentManager(ApplicationContext ctx, ServletContext servletContext) {
-        return new ContentManagerImpl(ctx.getResource("file:#{systemProperties['java.io.tmpdir']}/temp"), new TimeIterator(),
-            servletContext);
+    public ContentManager contentManager(ApplicationContext ctx, ServletContext servletContext) throws IOException {
+        return new LocalContentManager(ctx.getResource("file:#{systemProperties['java.io.tmpdir']}/temp").getFile(), new TimeIterator(),
+            servletContext.getContextPath());
     }
 
     @Bean

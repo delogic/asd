@@ -135,4 +135,11 @@ public class S3ContentManager implements ContentManager {
         return cdn;
     }
 
+    @Override
+    public String createZip(ContentZipEntry... contentZipEntries) {
+        // TODO implement zip. Probably will need a temp file to create the zip
+        // and then upload to S3
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
 }
