@@ -42,7 +42,7 @@ public class BusinessExceptionTest extends Assert {
     private void whenCheckingIfShouldThrowWithMessage(boolean b, String string, Object... params) {
         thrown = null;
         try {
-            ex.throwIf(b, string, params);
+            ex.thrownIf(b, string, params);
         } catch (BusinessException e) {
             thrown = e;
         }
@@ -60,7 +60,7 @@ public class BusinessExceptionTest extends Assert {
     private void whenCheckingIfShouldThrow(boolean b) {
         thrown = null;
         try {
-            ex.throwIf(b);
+            ex.thrownIf(b);
         } catch (BusinessException e) {
             thrown = e;
         }

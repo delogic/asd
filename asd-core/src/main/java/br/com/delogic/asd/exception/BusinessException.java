@@ -47,7 +47,7 @@ public class BusinessException extends AsdException {
         return ex;
     }
 
-    public BusinessException throwIf(boolean condition) throws BusinessException {
+    public BusinessException thrownIf(boolean condition) throws BusinessException {
         Assert.hasText(getMessage());
         if (condition) {
             throw this;
@@ -55,7 +55,7 @@ public class BusinessException extends AsdException {
         return this;
     }
 
-    public BusinessException throwIf(boolean condition, String message, Object... params) throws BusinessException {
+    public BusinessException thrownIf(boolean condition, String message, Object... params) throws BusinessException {
         Assert.hasText(message);
         if (condition) {
             throw withMessage(message, params);

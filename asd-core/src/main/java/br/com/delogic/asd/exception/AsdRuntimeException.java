@@ -46,7 +46,7 @@ public class AsdRuntimeException extends RuntimeException {
         return ex;
     }
 
-    public AsdRuntimeException throwIf(boolean condition) throws AsdRuntimeException {
+    public AsdRuntimeException thrownIf(boolean condition) throws AsdRuntimeException {
         Assert.hasText(getMessage());
         if (condition) {
             throw this;
@@ -54,7 +54,7 @@ public class AsdRuntimeException extends RuntimeException {
         return this;
     }
 
-    public AsdRuntimeException throwIf(boolean condition, String message, Object... params) throws AsdRuntimeException {
+    public AsdRuntimeException thrownIf(boolean condition, String message, Object... params) throws AsdRuntimeException {
         Assert.hasText(message);
         if (condition) {
             throw withMessage(message, params);

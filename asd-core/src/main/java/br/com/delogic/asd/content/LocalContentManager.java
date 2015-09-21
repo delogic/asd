@@ -139,14 +139,14 @@ public class LocalContentManager implements ContentManager {
     }
 
     private void validateFiles(ContentZipEntry[] contentZipEntries) {
-        NO_CONTENT_TO_ZIP.throwIf(!Has.content(contentZipEntries));
+        NO_CONTENT_TO_ZIP.thrownIf(!Has.content(contentZipEntries));
         Set<String> fileNames = Convert.from(contentZipEntries).toSetOf(new Converter<ContentZipEntry, String>() {
             @Override
             public String to(ContentZipEntry in) {
                 return in.getName();
             }
         });
-        REPEATED_FILE_NAMES.throwIf(fileNames.size() < contentZipEntries.length, "There are repeated file names. Check %s",
+        REPEATED_FILE_NAMES.thrownIf(fileNames.size() < contentZipEntries.length, "There are repeated file names. Check %s",
             Arrays.asList(contentZipEntries));
     }
 }
