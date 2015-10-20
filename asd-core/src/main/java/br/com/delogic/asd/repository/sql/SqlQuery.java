@@ -630,7 +630,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     }
 
     public SqlQuery<T> with(String with) {
-        setWith(with);;
+        setWith(with);
         return this;
     }
 
