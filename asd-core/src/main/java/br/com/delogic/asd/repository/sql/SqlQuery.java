@@ -400,7 +400,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         StringBuilder query = new StringBuilder();
 
-        if (Has.content(WITH_STATEMENT)) {
+        if (Has.content(with)) {
             query.append(WITH_STATEMENT).append(with);
         }
 
