@@ -89,6 +89,11 @@ import br.com.delogic.jfunk.data.Result;
 public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
     /**
+     * Querie's with statement without the "with" reserved word
+     */
+    private String with;
+
+    /**
      * Querie's select statement without the "select" reserved word
      */
     private String select;
@@ -142,6 +147,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     private Map<String, PermittedParameterType> mandatoryParameters;
 
     private static final String ORDER_STATEMENT = " order by ";
+    private static final String WITH_STATEMENT = "with ";
     private static final String SELECT_STATEMENT = "select ";
     private static final String SELECT_COUNT_STATEMENT = "select count(*) ";
     private static final String FROM_STATEMENT = " from ";
@@ -196,6 +202,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
          * search and remove the mandatory parameters from mandatory statements
          */
         Pattern pattern = Pattern.compile(":\\w+:\\w+");
+        with = removeMandatoryParamType(with, pattern, mandatoryParameters);
         select = removeMandatoryParamType(select, pattern, mandatoryParameters);
         from = removeMandatoryParamType(from, pattern, mandatoryParameters);
         where = removeMandatoryParamType(where, pattern, mandatoryParameters);
@@ -390,7 +397,14 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * @return String with the query composed and ready for execution
      */
     String composeQuery(Criteria criteria, Map<String, Object> params) {
-        StringBuilder query = new StringBuilder(SELECT_STATEMENT).append(select);
+
+        StringBuilder query = new StringBuilder();
+
+        if (Has.content(WITH_STATEMENT)) {
+            query.append(WITH_STATEMENT).append(with);
+        }
+
+        query.append(SELECT_STATEMENT).append(select);
 
         if (Has.content(from)) {
             query.append(FROM_STATEMENT).append(from);
@@ -589,12 +603,35 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     }
 
     /**
+     * Gets the wih statement
+     *
+     * @return
+     */
+    public String getWith() {
+        return with;
+    }
+
+    /**
      * Gets the select statement
      *
      * @return
      */
     public String getSelect() {
         return select;
+    }
+
+    /**
+     * Sets the with statement
+     *
+     * @param with
+     */
+    public void setWith(String with) {
+        this.with = with;
+    }
+
+    public SqlQuery<T> with(String with) {
+        setWith(with);;
+        return this;
     }
 
     /**
