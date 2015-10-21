@@ -251,7 +251,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
             String param = matcher.group();
             String[] paramSplitted = param.split(":");
             params.put(paramSplitted[1], PermittedParameterType.fromName(paramSplitted[2]));
-            statement = statement.replace(":" + paramSplitted[2], "");
+            statement = statement.replace(":" + paramSplitted[2], " ");
         }
         return statement;
     }
