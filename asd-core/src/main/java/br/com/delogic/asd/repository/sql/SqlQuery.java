@@ -404,7 +404,9 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
             query.append(WITH_STATEMENT).append(with);
         }
 
-        query.append(SELECT_STATEMENT).append(select);
+        if (Has.content(select)) {
+            query.append(SELECT_STATEMENT).append(select);
+        }
 
         if (Has.content(from)) {
             query.append(FROM_STATEMENT).append(from);
@@ -469,8 +471,20 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * @return String with the query composed and ready for execution
      */
     String composeCount(Criteria queryParameters) {
-        StringBuilder sbQuery = new StringBuilder(SELECT_COUNT_STATEMENT + FROM_STATEMENT + "(" + SELECT_STATEMENT + select
-            + FROM_STATEMENT + from);
+        StringBuilder sbQuery = new StringBuilder(SELECT_COUNT_STATEMENT + FROM_STATEMENT + "(");
+
+        if (Has.content(with)) {
+            sbQuery.append(WITH_STATEMENT).append(with);
+        }
+
+        if (Has.content(select)) {
+            sbQuery.append(SELECT_STATEMENT).append(select);
+        }
+
+        if (Has.content(from)) {
+            sbQuery.append(FROM_STATEMENT).append(from);
+        }
+
         if (Has.content(where)) {
             sbQuery.append(WHERE_STATEMENT);
             sbQuery.append(where);
