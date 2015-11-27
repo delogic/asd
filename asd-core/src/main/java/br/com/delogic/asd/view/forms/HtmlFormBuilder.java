@@ -1,4 +1,4 @@
-package br.com.delogic.asd.view;
+package br.com.delogic.asd.view.forms;
 
 import java.util.LinkedList;
 import java.util.List;

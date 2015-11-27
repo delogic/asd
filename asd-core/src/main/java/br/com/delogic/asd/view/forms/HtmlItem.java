@@ -1,4 +1,4 @@
-package br.com.delogic.asd.view;
+package br.com.delogic.asd.view.forms;
 
 public abstract class HtmlItem {
 

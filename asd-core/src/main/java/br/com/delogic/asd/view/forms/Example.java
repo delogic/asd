@@ -1,4 +1,4 @@
-package br.com.delogic.asd.view;
+package br.com.delogic.asd.view.forms;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,15 +7,15 @@ import java.util.Map;
 public class Example {
 
     public static final Map<String, List<String>> dados = new HashMap<String, List<String>>();
-    private static HtmlItemFactory htmlFormFactory;
+    private static HtmlItemFactory htmlItemFactory;
 
-    public static final FormModel UPLOAD_FORM = new FormModel().addElements(
+    public static final FormModel UPLOAD_FORM = new FormModel(htmlItemFactory).addItems(
         new FormItem("text").name("nomeOperador").label("Qual é o nome do operador ?"),
         new FormItem("radio").name("tratamento").label("Qual tipo de tratamento ?"),
         new FormItem("checkbox").name("instrumento").label("Qual instrumento de medição ?"),
         new FormItem("file").name("arquivo1").label("Envie a planilha preenchida"),
         new FormItem("simnao").name("construirDispositivo").label("Construção de dispositivo ?")
-        ).addHtmlFactory(htmlFormFactory);
+        );
 
     public void exemple() {
         HtmlForm form = UPLOAD_FORM.builder().setOptions(dados).setData(dados).build();
