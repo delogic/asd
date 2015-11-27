@@ -18,7 +18,7 @@ public class Example {
         );
 
     public void exemple() {
-        HtmlForm form = UPLOAD_FORM.builder().setOptions(dados).setData(dados).build();
+        HtmlForm form = UPLOAD_FORM.builder().setOptions(dados).setValues(dados).build();
         form.getItems();
         new HtmlItemFactory() {
 

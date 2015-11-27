@@ -31,14 +31,14 @@ public class HtmlFormBuilder implements Builder<HtmlForm> {
         for (FormItem formItem : formItems) {
             String itemName = formItem.getName();
             List<? extends Object> itemData = (List<? extends Object>) data.get(itemName);
-            List<? extends Object> itemOptions = (List<Object>) options.get(itemName);
+            List<? extends Object> itemOptions = (List<? extends Object>) options.get(itemName);
             HtmlItemFactory factory = htmlItemFactories.get(formItem.getType());
             htmlItems.add(factory.create(formItem, itemData, itemOptions));
         }
         return htmlItems;
     }
 
-    public <O extends Object> HtmlFormBuilder setData(Map<String, List<O>> data) {
+    public <O extends Object> HtmlFormBuilder setValues(Map<String, List<O>> data) {
         this.data = data;
         return this;
     }

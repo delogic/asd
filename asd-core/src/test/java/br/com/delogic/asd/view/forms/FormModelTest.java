@@ -43,10 +43,15 @@ public class FormModelTest extends BaseTest {
         thenFormItemsTypes("text", "radio", "checkbox");
         thenFormItemsIsModifiabled();
         thenHtmlItemFactoriesIsModifiable();
+        thenCanRegisterAnotherHtmlItemFactory();
     }
 
     private void thenHtmlItemFactoriesIsModifiable() {
         model.getHtmlItemFactories().add(mockHtmlItemFactory);
+    }
+
+    private void thenCanRegisterAnotherHtmlItemFactory() {
+        model.registerHtmlItemFactory(mockHtmlItemFactory);
     }
 
     private void givenFormItem(String string) {
@@ -85,8 +90,17 @@ public class FormModelTest extends BaseTest {
         thenBuilderIsCreated();
         thenFormItemsAmout(3);
         thenFormItemsTypes("text", "radio");
+        thenCannotRegisterAnotherHtmlItemFactory();
         thenFormItemsIsNotModifiabled();
         thenHtmlItemFactoriesIsNotModifiable();
+    }
+
+    private void thenCannotRegisterAnotherHtmlItemFactory() {
+        try {
+            model.registerHtmlItemFactory(mockHtmlItemFactory);
+            fail("should had thrown exception");
+        } catch (Exception e) {
+        }
     }
 
     private void givenFormItemsAdded(String... types) {
