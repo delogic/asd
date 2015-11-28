@@ -1,5 +1,6 @@
 package br.com.delogic.asd.view.forms;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,17 +26,30 @@ public class HtmlFormBuilder implements Builder<HtmlForm> {
         return new HtmlForm(createHtmlItems());
     }
 
-    @SuppressWarnings("unchecked")
     private List<HtmlItem> createHtmlItems() {
         List<HtmlItem> htmlItems = new LinkedList<HtmlItem>();
         for (FormItem formItem : formItems) {
             String itemName = formItem.getName();
-            List<? extends Object> itemData = (List<? extends Object>) data.get(itemName);
-            List<? extends Object> itemOptions = (List<? extends Object>) options.get(itemName);
             HtmlItemFactory factory = htmlItemFactories.get(formItem.getType());
-            htmlItems.add(factory.create(formItem, itemData, itemOptions));
+            htmlItems.add(factory.create(formItem, getOptions(itemName), getData(itemName)));
         }
         return htmlItems;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<? extends Object> getOptions(String itemName) {
+        if (options != null && options.containsKey(itemName)) {
+            return (List<? extends Object>) options.get(itemName);
+        }
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<? extends Object> getData(String itemName) {
+        if (data != null && data.containsKey(itemName)) {
+            return (List<? extends Object>) data.get(itemName);
+        }
+        return Collections.emptyList();
     }
 
     public <O extends Object> HtmlFormBuilder setValues(Map<String, List<O>> data) {

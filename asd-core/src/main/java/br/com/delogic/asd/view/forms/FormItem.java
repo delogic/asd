@@ -10,6 +10,7 @@ public class FormItem {
     private String label;
     private String type;
     private String name;
+    private int index;
 
     public FormItem(String type) {
         this.type = type;
@@ -44,6 +45,14 @@ public class FormItem {
     public FormItem name(String name) {
         this.name = name;
         return this;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    void setIndex(int index) {
+        this.index = index;
     }
 
 }

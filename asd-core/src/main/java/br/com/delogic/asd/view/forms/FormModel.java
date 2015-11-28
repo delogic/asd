@@ -30,6 +30,10 @@ public class FormModel {
             registeredHtmlItemFactories = Collections.unmodifiableMap(createHtmlItemFactories());
             formItems = Collections.unmodifiableList(formItems);
             htmlItemFactories = Collections.unmodifiableList(htmlItemFactories);
+            int index = 0;
+            for (FormItem formItem : formItems) {
+                formItem.setIndex(index++);
+            }
         }
         return new HtmlFormBuilder(registeredHtmlItemFactories, formItems);
     }

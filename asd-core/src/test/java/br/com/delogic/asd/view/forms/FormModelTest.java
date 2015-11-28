@@ -93,6 +93,14 @@ public class FormModelTest extends BaseTest {
         thenCannotRegisterAnotherHtmlItemFactory();
         thenFormItemsIsNotModifiabled();
         thenHtmlItemFactoriesIsNotModifiable();
+        thenIndexesAreSequential();
+    }
+
+    private void thenIndexesAreSequential() {
+        int index  = 0;
+        for (FormItem formItem : model.getFormItems()) {
+            assertEquals(index++, formItem.getIndex());
+        }
     }
 
     private void thenCannotRegisterAnotherHtmlItemFactory() {
