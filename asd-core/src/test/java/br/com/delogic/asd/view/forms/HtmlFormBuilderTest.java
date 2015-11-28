@@ -54,6 +54,11 @@ public class HtmlFormBuilderTest extends BaseTest {
         thenFactoryCalledWith(formItems.get(0), options.get("userId"), values.get("userId"));
         thenFactoryCalledWith(formItems.get(1), options.get("userName"), values.get("userName"));
         thenFactoryCalledWith(formItems.get(2), options.get("gender"), values.get("gender"));
+        thenHtmlFormIsCreated();
+    }
+
+    private void thenHtmlFormIsCreated() {
+        assertNotNull(form);
     }
 
     private void givenOptionsFor(String ... ids) {
@@ -106,6 +111,7 @@ public class HtmlFormBuilderTest extends BaseTest {
         whenBuildingHtmlForm();
         thenFactoryCalledWith(formItems.get(0), Collections.emptyList(), values.get("userName"));
         thenFactoryCalledWith(formItems.get(1), Collections.emptyList(), Collections.emptyList());
+        thenHtmlFormIsCreated();
     }
 
     @Test
@@ -115,6 +121,7 @@ public class HtmlFormBuilderTest extends BaseTest {
         givenOptionsFor("userName");
         whenBuildingHtmlForm();
         thenFactoryCalledWith(formItems.get(0), options.get("userName"), Collections.emptyList());
+        thenHtmlFormIsCreated();
     }
 
     @Test
@@ -125,6 +132,7 @@ public class HtmlFormBuilderTest extends BaseTest {
         whenBuildingHtmlForm();
         thenFactoryCalledWith(formItems.get(0), Collections.emptyList(), Collections.emptyList());
         thenFactoryCalledWith(formItems.get(1), Collections.emptyList(), Collections.emptyList());
+        thenHtmlFormIsCreated();
     }
 
 }
