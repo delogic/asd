@@ -24,7 +24,7 @@ public abstract class VersionedEntity<E> extends BaseEntity<E> {
     private Date creationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false, name = "MODIFICATION_DATE")
+    @Column(nullable = false, updatable = true, name = "MODIFICATION_DATE")
     @LastModifiedDate
     private Date modificationDate;
 

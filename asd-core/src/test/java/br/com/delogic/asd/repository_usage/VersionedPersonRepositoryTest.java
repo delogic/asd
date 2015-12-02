@@ -1,5 +1,7 @@
 package br.com.delogic.asd.repository_usage;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -13,7 +15,7 @@ public class VersionedPersonRepositoryTest extends SpringTestBase {
     private VersionedPersonRepository personRepository;
 
     @Test
-    public void teste() {
+    public void shouldSaveEntity() throws InterruptedException {
         VersionedPerson p = new VersionedPerson();
         p.setName("Célio Silva");
 
@@ -25,14 +27,24 @@ public class VersionedPersonRepositoryTest extends SpringTestBase {
         assertNotNull(p.getCreationDate());
         assertNotNull(p.getModificationDate());
 
+        Date modificationDate = p.getModificationDate();
+        Date creationDate = p.getCreationDate();
+
+        Thread.sleep(1);
+
         p.setName("Another Name");
 
         beginTransaction();
         personRepository.update(p);
         commitTransaction();
 
+        p = personRepository.findById(p.getId());
+
         assertNotNull(p.getCreationDate());
+        assertEquals(creationDate, p.getCreationDate());
+
         assertNotNull(p.getModificationDate());
+        assertNotEquals(modificationDate, p.getModificationDate());
 
         assertEquals("Another Name", personRepository.findById(p.getId()).getName());
 
