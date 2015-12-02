@@ -5,7 +5,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,8 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import br.com.delogic.asd.entities.Person;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)
@@ -53,20 +50,6 @@ public class SpringTestBase extends Assert {
     static {
         /* desligar o log para melhorar performance */
         // Log4jManager.setLevel(Level.INFO);
-    }
-
-    @Test
-    public void teste() {
-        Person p = new Person();
-        p.setName("Célio Silva");
-
-        beginTransaction();
-        entityManager.persist(p);
-        entityManager.flush();
-        commitTransaction();
-
-        assertEquals("Célio Silva", entityManager.find(Person.class, 1).getName());
-
     }
 
 }
