@@ -220,7 +220,10 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         if (returnType.equals(String.class)) {
             rowMapper = new StringRowMapper<T>();
 
-        } else if (returnType.equals(Integer.class)) {
+        }else if(returnType.equals(Boolean.class)){
+            rowMapper = new BooleanRowMapper<T>();
+        }
+        else if (returnType.equals(Integer.class)) {
             rowMapper = new IntegerRowMapper<T>();
 
         } else {
