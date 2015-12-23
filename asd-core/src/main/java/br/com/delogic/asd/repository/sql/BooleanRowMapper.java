@@ -17,7 +17,7 @@ public class BooleanRowMapper <E> implements RowMapper<E>  {
     
     @SuppressWarnings("unchecked")
     public E mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Boolean value = rs.getBoolean(0);
+        Boolean value = rs.getBoolean(1);
         return (E) value;
     }
 }
