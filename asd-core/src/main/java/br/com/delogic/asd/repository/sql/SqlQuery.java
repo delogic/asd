@@ -181,7 +181,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * run only once before any call to retrieve information from database or
      * explicitly calling {@code afterPropertiesSet()} method.
      */
-    void maybeInitializeQuery() {
+    protected void maybeInitializeQuery() {
         if (initialized) {
             /*
              * if is already initialized just leave
@@ -396,7 +396,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *            parameters configured in the query
      * @return String with the query composed and ready for execution
      */
-    String composeQuery(Criteria criteria, Map<String, Object> params) {
+    protected String composeQuery(Criteria criteria, Map<String, Object> params) {
 
         StringBuilder query = new StringBuilder();
 
@@ -470,7 +470,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *            parameters configured in the query
      * @return String with the query composed and ready for execution
      */
-    String composeCount(Criteria queryParameters) {
+    protected String composeCount(Criteria queryParameters) {
         StringBuilder sbQuery = new StringBuilder(SELECT_COUNT_STATEMENT + FROM_STATEMENT + "(");
 
         if (Has.content(with)) {
@@ -534,7 +534,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *            - array of orders to be executed for this query.
      * @return String containnig the ordering in appropriate format
      */
-    String parseOrderBy(String[] orderBy) {
+    protected String parseOrderBy(String[] orderBy) {
         String[] orders = orderBy;
         String newOrderBy = " ";
         boolean addComma = false;
@@ -861,7 +861,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *
      * @return
      */
-    Map<String, PermittedParameterType> getRegisteredParameters() {
+    protected Map<String, PermittedParameterType> getRegisteredParameters() {
         return registeredParameters;
     }
 
@@ -870,7 +870,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *
      * @return
      */
-    Map<String, PermittedParameterType> getMandatoryParameters() {
+    protected Map<String, PermittedParameterType> getMandatoryParameters() {
         return mandatoryParameters;
     }
 
