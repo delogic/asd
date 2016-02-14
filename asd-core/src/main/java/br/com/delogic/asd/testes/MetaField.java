@@ -1,57 +1,93 @@
 package br.com.delogic.asd.testes;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/
+ * Constraint_validation
+ * 
+ * @author Celio
+ *
+ */
 public class MetaField {
 
+    private final List<Constraint<?>> constraints = new ArrayList<>();
+    private boolean required;
+    private Integer maxLength;
+    private String pattern;
+    private String type;
+    private Object min;
+    private Object max;
+
     public MetaField required() {
-        // TODO Auto-generated method stub
-        return null;
+        required = true;
+        return this;
     }
 
-    public MetaField max(int i) {
-        // TODO Auto-generated method stub
-        return null;
+    public boolean isRequired() {
+        return required;
     }
 
-    public MetaField format(String regex) {
-        // TODO Auto-generated method stub
-        return null;
+    public MetaField maxLength(int maxLength) {
+        this.maxLength = maxLength;
+        return this;
     }
 
-    public MetaField id() {
-        // TODO Auto-generated method stub
-        return null;
+    public Integer getMaxLength() {
+        return maxLength;
     }
 
-    public MetaField each() {
-        // TODO Auto-generated method stub
-        return null;
+    public MetaField pattern(String regex) {
+        this.pattern = regex;
+        return this;
     }
 
-    public MetaField atLeast(int i) {
-        // TODO Auto-generated method stub
-        return null;
+    public String getPattern() {
+        return pattern;
     }
 
-    public MetaField between(Date date, Date date2) {
-        // TODO Auto-generated method stub
-        return null;
+    public MetaField min(double min) {
+        this.min = min;
+        return this;
     }
 
-    public MetaField greaterThan(int i) {
-        // TODO Auto-generated method stub
-        return null;
+    public Object getMin() {
+        throw new UnsupportedOperationException("thinking about it");
     }
 
-    public MetaField lessThan(int i) {
-        // TODO Auto-generated method stub
-        return null;
+    public MetaField max(double max) {
+        this.max = max;
+        return this;
     }
 
-    public MetaField check(Constraint<?> constraint) {
-        // TODO Auto-generated method stub
-        return null;
+    public Object getMax() {
+        throw new UnsupportedOperationException("thinking about it");
+    }
+
+    public MetaField min(Date min) {
+        this.min = min;
+        return this;
+    }
+
+    public MetaField max(Date max) {
+        this.max = max;
+        return this;
+    }
+
+    public MetaField constraint(Constraint<?> constraint) {
+        this.constraints.add(constraint);
+        return this;
+    }
+
+    public MetaField type(String dataType) {
+        this.type = dataType;
+        return this;
+    }
+
+    public String getType() {
+        return type;
     }
 
 }
