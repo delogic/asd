@@ -1,5 +1,7 @@
 package br.com.delogic.asd.content;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
@@ -128,7 +130,7 @@ public class S3ContentManager implements ContentManager {
 
     @Override
     public InputStream getInpuStream(String name) throws Exception {
-        throw new UnsupportedOperationException("não implementado");
+        return new FileInputStream(cdn + File.separatorChar + name);
     }
 
     public String getCdn() {
