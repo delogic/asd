@@ -1,17 +1,28 @@
 package br.com.delogic.asd.content;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.zip.ZipOutputStream;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import br.com.delogic.asd.exception.UnexpectedApplicationException;
+import br.com.delogic.jfunk.Convert;
+import br.com.delogic.jfunk.Converter;
 import br.com.delogic.jfunk.Has;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -32,6 +43,8 @@ public class S3ContentManager implements ContentManager {
     private final Iterator<? extends Object> iterator;
     private final MimetypesFileTypeMap typeMap = new MimetypesFileTypeMap();
     private final String cdn;
+
+    private final String temp = "/tmp/";
 
     public S3ContentManager(AWSCredentials credentials, String endpoint, String bucket, String cdn, Iterator<? extends Object> iterator) {
         if (!Has.content(endpoint) || !endpoint.startsWith("http")) {
@@ -128,7 +141,7 @@ public class S3ContentManager implements ContentManager {
 
     @Override
     public InputStream getInpuStream(String name) throws Exception {
-        throw new UnsupportedOperationException("não implementado");
+        return client.getObject(new GetObjectRequest(bucket, name)).getObjectContent();
     }
 
     public String getCdn() {
@@ -137,9 +150,65 @@ public class S3ContentManager implements ContentManager {
 
     @Override
     public String createZip(ContentZipEntry... contentZipEntries) {
-        // TODO implement zip. Probably will need a temp file to create the zip
-        // and then upload to S3
-        throw new UnsupportedOperationException("Not implemented yet");
+        validateFiles(contentZipEntries);
+
+        ZipOutputStream zos = null;
+        FileOutputStream fos = null;
+        String zipFileName = null;
+        String absoluteFileName = "";
+
+        try {
+            zipFileName = iterator.next().toString() + ".zip";
+            absoluteFileName = temp + File.separatorChar + zipFileName;
+            fos = new FileOutputStream(absoluteFileName);
+            zos = new ZipOutputStream(fos);
+            byte[] buffer = new byte[1024];
+            int len;
+
+            for (ContentZipEntry contentZipEntry : contentZipEntries) {
+                zos.putNextEntry(contentZipEntry);
+                InputStream in = contentZipEntry.getInputStream();
+                while ((len = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                in.close();
+                zos.closeEntry();
+            }
+
+        } catch (Exception e) {
+            throw new UnexpectedApplicationException("Exception when creating a zip file with entries "
+                + Arrays.toString(contentZipEntries), e);
+        } finally {
+            try {
+                zos.close();
+                fos.close();
+
+                ObjectMetadata metadata = createMetadata(zipFileName);
+                PutObjectRequest req = new PutObjectRequest(bucket, zipFileName, new FileInputStream(absoluteFileName), metadata);
+                req.setCannedAcl(CannedAccessControlList.PublicRead);
+
+                client.putObject(req);
+
+            } catch (IOException e) {
+                throw new UnexpectedApplicationException("Exception when closing the zip file with entries "
+                    + Arrays.toString(contentZipEntries), e);
+            }
+        }
+
+        return zipFileName;
+
+    }
+
+    private void validateFiles(ContentZipEntry[] contentZipEntries) {
+        NO_CONTENT_TO_ZIP.thrownIf(!Has.content(contentZipEntries));
+        Set<String> fileNames = Convert.from(contentZipEntries).toSetOf(new Converter<ContentZipEntry, String>() {
+            @Override
+            public String to(ContentZipEntry in) {
+                return in.getName();
+            }
+        });
+        REPEATED_FILE_NAMES.thrownIf(fileNames.size() < contentZipEntries.length, "There are repeated file names. Check %s",
+            Arrays.asList(contentZipEntries));
     }
 
 }
