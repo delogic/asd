@@ -211,4 +211,10 @@ public class S3ContentManager implements ContentManager {
             Arrays.asList(contentZipEntries));
     }
 
+    @Override
+    public String commit(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
