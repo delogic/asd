@@ -213,8 +213,7 @@ public class S3ContentManager implements ContentManager {
 
     @Override
     public String commit(String name) {
-        // TODO Auto-generated method stub
-        return null;
+        return name;
     }
 
 }

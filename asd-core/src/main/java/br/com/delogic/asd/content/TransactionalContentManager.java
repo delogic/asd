@@ -11,14 +11,14 @@ import br.com.delogic.jfunk.Has;
 
 public class TransactionalContentManager implements ContentManager {
 
-    private ContentManager contentManager1;
-    private ContentManager contentManager2;
-    private static final List<String> TEMP_FILES = new ArrayList<String>();
+    private ContentManager tempContentManager;
+    private ContentManager finalContentManager;
+    private final List<String> TEMP_FILES = new ArrayList<String>();
     private static final Logger logger = LoggerFactory.getLogger("CONTENT");
 
-    public TransactionalContentManager(ContentManager contentManager1, ContentManager contentManager2) {
-        this.contentManager1 = contentManager1;
-        this.contentManager2 = contentManager2;
+    public TransactionalContentManager(ContentManager tempContentManager, ContentManager finalContentManager) {
+        this.tempContentManager = tempContentManager;
+        this.finalContentManager = finalContentManager;
     }
 
     @Override
@@ -27,29 +27,29 @@ public class TransactionalContentManager implements ContentManager {
             return "";
         }
         if (TEMP_FILES.contains(name)) {
-            return contentManager1.get(name);
+            return tempContentManager.get(name);
         }
-        return contentManager2.get(name);
+        return finalContentManager.get(name);
     }
 
     @Override
-    public String create(InputStream inputStream, String fileName) {
-        return addTempFile(contentManager1.create(inputStream, fileName));
+    public synchronized String create(InputStream inputStream, String fileName) {
+        return addTempFile(tempContentManager.create(inputStream, fileName));
     }
 
     @Override
-    public void update(InputStream inputStream, String fileName) {
-        contentManager1.update(inputStream, fileName);
+    public synchronized void update(InputStream inputStream, String fileName) {
+        tempContentManager.update(inputStream, fileName);
         addTempFile(fileName);
     }
 
     @Override
-    public String createZip(ContentZipEntry... contentZipEntries) {
-        return addTempFile(contentManager1.createZip(contentZipEntries));
+    public synchronized String createZip(ContentZipEntry... contentZipEntries) {
+        return addTempFile(tempContentManager.createZip(contentZipEntries));
     }
 
     @Override
-    public String commit(String name) {
+    public synchronized String commit(String name) {
         if (!TEMP_FILES.contains(name)) {
             logger.warn(String.format(
                 "Não foi possível realizar o commit do arquivo %s. O arquivo não existem mais no "
@@ -59,8 +59,9 @@ public class TransactionalContentManager implements ContentManager {
         }
 
         try {
+            String newFileName = finalContentManager.create(tempContentManager.getInpuStream(name), name);
             TEMP_FILES.remove(name);
-            return contentManager2.create(contentManager1.getInpuStream(name), name);
+            return newFileName;
         } catch (Exception e) {
             throw new IllegalArgumentException("Ocorreu um erro ao tentar obter o inputstream do arquivo : " + name);
         }
@@ -72,12 +73,12 @@ public class TransactionalContentManager implements ContentManager {
             return null;
         }
         if (TEMP_FILES.contains(name)) {
-            return contentManager1.getInpuStream(name);
+            return tempContentManager.getInpuStream(name);
         }
-        return contentManager2.getInpuStream(name);
+        return finalContentManager.getInpuStream(name);
     }
 
-    public static String addTempFile(String newFileName) {
+    public String addTempFile(String newFileName) {
         TEMP_FILES.add(newFileName);
         return newFileName;
     }
