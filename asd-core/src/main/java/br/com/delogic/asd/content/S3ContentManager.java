@@ -211,4 +211,9 @@ public class S3ContentManager implements ContentManager {
             Arrays.asList(contentZipEntries));
     }
 
+    @Override
+    public String commit(String name) {
+        return name;
+    }
+
 }

@@ -83,4 +83,14 @@ public interface ContentManager {
      */
     String createZip(ContentZipEntry... contentZipEntries);
 
+    /**
+     * Obtain the content of param from contentManager1 and save content on
+     * contentManager2 returning fileName created on contentManager2
+     *
+     * @param name
+     *            - content saved
+     * @return a new file name named file-something.extension
+     */
+    String commit(String name);
+
 }

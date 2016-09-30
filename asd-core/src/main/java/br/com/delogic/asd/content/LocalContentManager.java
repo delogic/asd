@@ -149,4 +149,9 @@ public class LocalContentManager implements ContentManager {
         REPEATED_FILE_NAMES.thrownIf(fileNames.size() < contentZipEntries.length, "There are repeated file names. Check %s",
             Arrays.asList(contentZipEntries));
     }
+
+    @Override
+    public String commit(String name) {
+        return name;
+    }
 }
