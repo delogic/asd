@@ -72,12 +72,9 @@ public class ContentController {
     }
 
     private String getNomeComExtensao(String nome, String file) {
-
-        if (file.contains(".") &&
-            file.lastIndexOf(".") == file.length() - 4) {
+        if (file.contains(".")) {
             return nome + file.substring(file.lastIndexOf("."), file.length());
         }
-
         return nome;
     }
 
