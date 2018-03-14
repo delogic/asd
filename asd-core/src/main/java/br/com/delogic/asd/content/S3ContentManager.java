@@ -16,11 +16,6 @@ import javax.activation.MimetypesFileTypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.delogic.asd.exception.UnexpectedApplicationException;
-import br.com.delogic.jfunk.Convert;
-import br.com.delogic.jfunk.Converter;
-import br.com.delogic.jfunk.Has;
-
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -28,6 +23,11 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
+import br.com.delogic.asd.exception.UnexpectedApplicationException;
+import br.com.delogic.jfunk.Convert;
+import br.com.delogic.jfunk.Converter;
+import br.com.delogic.jfunk.Has;
 
 /**
  * Caching policy from
@@ -49,7 +49,7 @@ public class S3ContentManager implements ContentManager {
     private CannedAccessControlList defaultPermission = CannedAccessControlList.PublicRead;
 
     private final String temp = "/tmp/";
-    
+
     private static final Logger logger = LoggerFactory.getLogger(S3ContentManager.class);
 
     public S3ContentManager(AWSCredentials credentials, String endpoint, String bucket, String cdn, Iterator<? extends Object> iterator) {
@@ -87,7 +87,7 @@ public class S3ContentManager implements ContentManager {
         String val = iterator.next().toString();
         String newFileName = "file" + val + "." + getFileExtension(fileName);
 
-        ObjectMetadata metadata = createMetadata(newFileName);
+        ObjectMetadata metadata = createMetadata(newFileName, inputStream);
         PutObjectRequest req = new PutObjectRequest(bucket, newFileName, inputStream, metadata);
         req.setCannedAcl(getDefaultPermission());
 
@@ -96,7 +96,7 @@ public class S3ContentManager implements ContentManager {
 
         return newFileName;
     }
-    
+
     private void tentarFechar(InputStream inputStream) {
         try {
             inputStream.close();
@@ -109,7 +109,7 @@ public class S3ContentManager implements ContentManager {
     public void update(InputStream inputStream, String fileName) {
         fileName = getRealFileName(fileName);
 
-        ObjectMetadata metadata = createMetadata(fileName);
+        ObjectMetadata metadata = createMetadata(fileName, inputStream);
 
         PutObjectRequest req = new PutObjectRequest(bucket, fileName, inputStream, metadata);
         req.setCannedAcl(getDefaultPermission());
@@ -117,12 +117,23 @@ public class S3ContentManager implements ContentManager {
         tentarFechar(inputStream);
     }
 
-    private ObjectMetadata createMetadata(String fileName) {
+    protected ObjectMetadata createMetadata(String fileName, InputStream inputStream) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(typeMap.getContentType(fileName));
         if (cache) {
             metadata.setLastModified(new Date());
             metadata.setCacheControl("max-age=31536000");
+        }
+        if (inputStream instanceof FileInputStream) {
+            FileInputStream fis = (FileInputStream) inputStream;
+            try {
+                metadata.setHeader("Content-Length", fis.getChannel().size());
+            } catch (IOException e) {
+                logger.error("erro ao tentar ler content length do arquivo para evitar OOM no envio", e);
+            }
+        } else {
+            // definir como deverá ser feito, talvez será necessário escrever o
+            // arquivo para o filesystem para ler a partir de File.
         }
         return metadata;
     }
@@ -198,9 +209,9 @@ public class S3ContentManager implements ContentManager {
             try {
                 zos.close();
                 fos.close();
-
-                ObjectMetadata metadata = createMetadata(zipFileName);
-                PutObjectRequest req = new PutObjectRequest(bucket, zipFileName, new FileInputStream(absoluteFileName), metadata);
+                FileInputStream fis = new FileInputStream(absoluteFileName);
+                ObjectMetadata metadata = createMetadata(zipFileName, fis);
+                PutObjectRequest req = new PutObjectRequest(bucket, zipFileName, fis, metadata);
                 req.setCannedAcl(getDefaultPermission());
 
                 client.putObject(req);
