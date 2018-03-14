@@ -13,6 +13,9 @@ import java.util.zip.ZipOutputStream;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.delogic.asd.exception.UnexpectedApplicationException;
 import br.com.delogic.jfunk.Convert;
 import br.com.delogic.jfunk.Converter;
@@ -43,8 +46,11 @@ public class S3ContentManager implements ContentManager {
     private final Iterator<? extends Object> iterator;
     private final MimetypesFileTypeMap typeMap = new MimetypesFileTypeMap();
     private final String cdn;
+    private CannedAccessControlList defaultPermission = CannedAccessControlList.PublicRead;
 
     private final String temp = "/tmp/";
+    
+    private static final Logger logger = LoggerFactory.getLogger(S3ContentManager.class);
 
     public S3ContentManager(AWSCredentials credentials, String endpoint, String bucket, String cdn, Iterator<? extends Object> iterator) {
         if (!Has.content(endpoint) || !endpoint.startsWith("http")) {
@@ -83,11 +89,20 @@ public class S3ContentManager implements ContentManager {
 
         ObjectMetadata metadata = createMetadata(newFileName);
         PutObjectRequest req = new PutObjectRequest(bucket, newFileName, inputStream, metadata);
-        req.setCannedAcl(CannedAccessControlList.PublicRead);
+        req.setCannedAcl(getDefaultPermission());
 
         client.putObject(req);
+        tentarFechar(inputStream);
 
         return newFileName;
+    }
+    
+    private void tentarFechar(InputStream inputStream) {
+        try {
+            inputStream.close();
+        } catch (Exception e) {
+            logger.debug("erro ao tentar fechar input stream, talvez já esteja fechado:" + e.getMessage());
+        }
     }
 
     @Override
@@ -97,8 +112,9 @@ public class S3ContentManager implements ContentManager {
         ObjectMetadata metadata = createMetadata(fileName);
 
         PutObjectRequest req = new PutObjectRequest(bucket, fileName, inputStream, metadata);
-        req.setCannedAcl(CannedAccessControlList.PublicRead);
+        req.setCannedAcl(getDefaultPermission());
         client.putObject(req);
+        tentarFechar(inputStream);
     }
 
     private ObjectMetadata createMetadata(String fileName) {
@@ -185,7 +201,7 @@ public class S3ContentManager implements ContentManager {
 
                 ObjectMetadata metadata = createMetadata(zipFileName);
                 PutObjectRequest req = new PutObjectRequest(bucket, zipFileName, new FileInputStream(absoluteFileName), metadata);
-                req.setCannedAcl(CannedAccessControlList.PublicRead);
+                req.setCannedAcl(getDefaultPermission());
 
                 client.putObject(req);
 
@@ -214,6 +230,14 @@ public class S3ContentManager implements ContentManager {
     @Override
     public String commit(String name) {
         return name;
+    }
+
+    public CannedAccessControlList getDefaultPermission() {
+        return defaultPermission;
+    }
+
+    public void setDefaultPermission(CannedAccessControlList defaultPermission) {
+        this.defaultPermission = defaultPermission;
     }
 
 }

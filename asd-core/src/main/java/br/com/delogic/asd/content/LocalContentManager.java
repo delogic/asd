@@ -49,12 +49,22 @@ public class LocalContentManager implements ContentManager {
         String newFileName = "file" + val + "." + getFileExtension(fileName);
         saveToServer(inputStream, absolutePath + File.separatorChar,
             newFileName);
+        tentarFechar(inputStream);
         return newFileName;
+    }
+    
+    private void tentarFechar(InputStream inputStream) {
+        try {
+            inputStream.close();
+        } catch (Exception e) {
+            logger.debug("erro ao tentar fechar input stream, talvez já esteja fechado:" + e.getMessage());
+        }
     }
 
     @Override
     public void update(InputStream inputStream, String fileName) {
         saveToServer(inputStream, absolutePath + File.separatorChar, fileName);
+        tentarFechar(inputStream);
     }
 
     private String getFileExtension(String fileName) {

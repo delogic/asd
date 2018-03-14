@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +38,7 @@ public class ContentController {
     }
 
     private final ContentManager contentManager;
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     public ContentController(ContentManager contentManager) {
         this.contentManager = contentManager;
@@ -69,6 +72,15 @@ public class ContentController {
         response.addHeader("Content-Disposition", disposition + ";filename=" + getNomeComExtensao(name, file));
         IOUtils.copy(is, response.getOutputStream());
         response.flushBuffer();
+        tentarFechar(is);
+    }
+    
+    private void tentarFechar(InputStream inputStream) {
+        try {
+            inputStream.close();
+        } catch (Exception e) {
+            logger.debug("erro ao tentar fechar input stream, talvez já esteja fechado:" + e.getMessage());
+        }
     }
 
     private String getNomeComExtensao(String nome, String file) {
