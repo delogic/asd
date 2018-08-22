@@ -2,8 +2,12 @@ package br.com.delogic.asd.repository.sql;
 
 public class Filter {
 
-    private final String key;
-    private final String value;
+    private String key;
+    private String value;
+
+    public Filter() {
+
+    }
 
     public Filter(String key, String value) {
         this.key = key;
@@ -14,8 +18,16 @@ public class Filter {
         return key;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
 }
