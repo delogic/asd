@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 import br.com.delogic.jfunk.data.Identifiable;
 
-public class EntityRepositoryImpl<T extends Identifiable<Integer>, ID extends Serializable> implements
+public class EntityRepositoryImpl<T extends Identifiable<ID>, ID extends Serializable> implements
     EntityRepository<T, ID> {
 
     private final EntityManager em;
