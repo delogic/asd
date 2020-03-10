@@ -19,7 +19,7 @@ import br.com.delogic.jfunk.data.Identifiable;
  * @param <ID>
  */
 @NoRepositoryBean
-public interface EntityRepository<T extends Identifiable<Integer>, ID extends Serializable> extends Repository<T, ID> {
+public interface EntityRepository<T extends Identifiable<ID>, ID extends Serializable> extends Repository<T, ID> {
 
     /**
      * Finds and returns an entity given his id

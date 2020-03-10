@@ -5,7 +5,7 @@
     <groupId>br.com.delogic</groupId>
     <artifactId>asd</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>Arquitetura de Serviços Delogic</name>
 
     <modules>
