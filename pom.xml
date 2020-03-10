@@ -19,7 +19,7 @@
         <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
         <java.version>1.7</java.version>
         <org.springframework.version>4.2.0.RELEASE</org.springframework.version>
-        <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>1.11.23.RELEASE</spring-data-jpa.version>
         <jackson.version>2.2.3</jackson.version>
         <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
         <aws.version>1.4.5</aws.version>
