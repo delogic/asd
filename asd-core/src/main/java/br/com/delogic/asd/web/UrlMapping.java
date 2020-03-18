@@ -61,7 +61,7 @@ public class UrlMapping implements ServletContextAware {
         private UriComponentsBuilder builder;
 
         private UrlBuilder(String path) {
-            builder = UriComponentsBuilder.fromUriString(contexto + path);
+            builder = UriComponentsBuilder.fromUriString(path);
         }
 
         public UrlBuilder query(String queryString) {
