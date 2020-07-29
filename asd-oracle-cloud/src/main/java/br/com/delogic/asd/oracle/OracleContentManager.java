@@ -1,4 +1,4 @@
-package br.com.delogic.asd.content;
+package br.com.delogic.asd.oracle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +26,8 @@ import com.oracle.bmc.objectstorage.requests.GetObjectRequest;
 import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import com.oracle.bmc.objectstorage.responses.GetObjectResponse;
 
+import br.com.delogic.asd.content.ContentManager;
+import br.com.delogic.asd.content.ContentZipEntry;
 import br.com.delogic.asd.exception.UnexpectedApplicationException;
 import br.com.delogic.jfunk.Convert;
 import br.com.delogic.jfunk.Converter;

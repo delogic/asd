@@ -1,4 +1,4 @@
-package br.com.delogic.asd.content;
+package br.com.delogic.asd.amazon;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import br.com.delogic.asd.content.ContentManager;
+import br.com.delogic.asd.content.ContentZipEntry;
 import br.com.delogic.asd.exception.UnexpectedApplicationException;
 import br.com.delogic.jfunk.Convert;
 import br.com.delogic.jfunk.Converter;
