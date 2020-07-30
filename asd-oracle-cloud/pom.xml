@@ -26,15 +26,6 @@
 			<artifactId>oci-java-sdk-objectstorage</artifactId>
 			<version>${oracle.sdk.version}</version>
 		</dependency>
-		<!-- =============================================== -->
-		<!-- TEST -->
-		<dependency>
-			<groupId>br.com.delogic</groupId>
-			<artifactId>asd-test</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-			<type>pom</type>
-			<scope>provided</scope>
-		</dependency>
 
 	</dependencies>
 
