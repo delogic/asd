@@ -6,7 +6,7 @@
     <artifactId>asd</artifactId>
     <packaging>pom</packaging>
 	<!--alterar versao de todos com: mvn versions:set -DgenerateBackupPoms=false | executar na raiz do projeto -->
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <name>Arquitetura de Serviços Delogic</name>
 
     <modules>
