@@ -8,7 +8,7 @@
     <parent>
         <groupId>br.com.delogic</groupId>
         <artifactId>asd</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>asd-database</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.4</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>asd-web</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.4</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -114,10 +114,33 @@
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>asd-test</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.4</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+        <!-- =============================================== -->
+        <!-- LOGGIN -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

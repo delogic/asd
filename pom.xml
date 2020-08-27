@@ -6,7 +6,7 @@
     <artifactId>asd</artifactId>
     <packaging>pom</packaging>
 	<!--alterar versao de todos com: mvn versions:set -DgenerateBackupPoms=false | executar na raiz do projeto -->
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <name>Arquitetura de Serviços Delogic</name>
 
     <modules>
@@ -27,7 +27,9 @@
         <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
 		<aws.version>1.4.5</aws.version>
 		<oracle.sdk.version>1.17.5</oracle.sdk.version>
-		
+		<slf4j.version>1.5.8</slf4j.version>
+		<log4j.version>1.2.14</log4j.version>
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -40,34 +42,10 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-        <!-- =============================================== -->
-        <!-- LOGGIN -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-        </dependency>
-        <!-- =============================================== -->
-        <!-- LOGGIN -->
         <dependency>
             <groupId>br.com.delogic</groupId>
             <artifactId>jfunk</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.2</version>
         </dependency>
 
     </dependencies>
@@ -237,7 +215,7 @@
             <dependency>
                 <groupId>br.com.delogic</groupId>
                 <artifactId>jnerator</artifactId>
-                <version>0.9.0-SNAPSHOT</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
