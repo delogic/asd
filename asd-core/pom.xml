@@ -119,13 +119,6 @@
             <scope>provided</scope>
         </dependency>
         <!-- =============================================== -->
-        <!-- TEST -->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- =============================================== -->
         <!-- LOGGIN -->
         <dependency>
             <groupId>org.slf4j</groupId>

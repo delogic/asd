@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.delogic</groupId>
@@ -14,7 +14,9 @@
         <module>asd-database</module>
         <module>asd-web</module>
         <module>asd-test</module>
-    </modules>
+        <module>asd-amazon-cloud</module>
+        <module>asd-oracle-cloud</module>
+	</modules>
 
     <properties>
         <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
@@ -23,9 +25,11 @@
         <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
         <jackson.version>2.2.3</jackson.version>
         <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
-        <aws.version>1.4.5</aws.version>
+		<aws.version>1.4.5</aws.version>
+		<oracle.sdk.version>1.17.5</oracle.sdk.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -264,13 +268,6 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.jpa</artifactId>
                 <version>${org.eclisepselink.version}</version>
-            </dependency>
-            <!-- =============================================== -->
-            <!-- AMAZON WEB SERVICES API -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk</artifactId>
-                <version>${aws.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
