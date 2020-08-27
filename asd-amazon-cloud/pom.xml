@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>br.com.delogic</groupId>
 		<artifactId>asd</artifactId>
-		<version>0.0.4-SNAPSHOT</version>
+		<version>0.0.4</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
