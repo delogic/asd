@@ -118,14 +118,6 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
-        <!-- =============================================== -->
-        <!-- TEST -->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
