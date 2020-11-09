@@ -10,10 +10,13 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 
+import br.com.delogic.asd.exception.AsdRuntimeException;
 import br.com.delogic.asd.exception.UnexpectedApplicationException;
 import br.com.delogic.jfunk.Convert;
 import br.com.delogic.jfunk.Converter;
@@ -164,4 +167,13 @@ public class LocalContentManager implements ContentManager {
     public String commit(String name) {
         return name;
     }
+
+	@Override
+	public String getMd5Base64(String name) {
+		try (InputStream is = getInpuStream(name)) {
+			return Base64Utils.encodeToString(DigestUtils.md5(is));
+		} catch (Exception e) {
+			throw new AsdRuntimeException("Error trying to get md5 from:" + name, e);
+		}
+	}
 }

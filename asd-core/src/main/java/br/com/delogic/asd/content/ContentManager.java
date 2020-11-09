@@ -92,5 +92,12 @@ public interface ContentManager {
      * @return a new file name named file-something.extension
      */
     String commit(String name);
+    
+    /**
+     * Returns the MD5 for the inputStream content in Base64 format. Prefer Base64Utils from Spring to convert.
+     * @param name
+     * @return Md5 in Base64 encoded
+     */
+    String getMd5Base64(String name);
 
 }
