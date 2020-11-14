@@ -24,6 +24,8 @@ import br.com.delogic.jfunk.Has;
 
 public class LocalContentManager implements ContentManager {
 
+    private static final String TEMP_ZIP_PREFIX = "T3Mp_z1P-";
+    private static final String TEMP_ZIP_SUFIX = ".zip";
     private final Iterator<? extends Object> iterator;
     private final String absolutePath;
     private final String contextPath;
@@ -35,6 +37,7 @@ public class LocalContentManager implements ContentManager {
         this.absolutePath = contentDirectory.getAbsolutePath();
         this.iterator = iterator;
         this.contextPath = contextPath;
+        new File(absolutePath).mkdirs();
     }
 
     @Override
@@ -92,6 +95,10 @@ public class LocalContentManager implements ContentManager {
     }
 
     public InputStream getInpuStream(String name) throws Exception {
+        if (Has.content(name) && name.startsWith(TEMP_ZIP_PREFIX) && name.endsWith(TEMP_ZIP_SUFIX)) {
+            File tempZipFile = File.createTempFile(name.replace(TEMP_ZIP_SUFIX, ""), TEMP_ZIP_SUFIX);
+            return new FileInputStream(tempZipFile);
+        }
         return new FileInputStream(absolutePath + File.separatorChar + name);
     }
 
@@ -115,12 +122,11 @@ public class LocalContentManager implements ContentManager {
 
         ZipOutputStream zos = null;
         FileOutputStream fos = null;
-        String zipFileName = null;
+        File zipFile = null;
 
         try {
-            zipFileName = iterator.next().toString() + ".zip";
-            String absoluteFileName = absolutePath + File.separatorChar + zipFileName;
-            fos = new FileOutputStream(absoluteFileName);
+            zipFile = File.createTempFile(TEMP_ZIP_PREFIX + iterator.next().toString(), TEMP_ZIP_SUFIX);
+            fos = new FileOutputStream(zipFile);
             zos = new ZipOutputStream(fos);
             byte[] buffer = new byte[1024];
             int len;
@@ -148,7 +154,7 @@ public class LocalContentManager implements ContentManager {
             }
         }
 
-        return zipFileName;
+        return zipFile.getName();
     }
 
     private void validateFiles(ContentZipEntry[] contentZipEntries) {
@@ -168,7 +174,7 @@ public class LocalContentManager implements ContentManager {
         return name;
     }
 
-	@Override
+//	@Override
 	public String getMd5Base64(String name) {
 		try (InputStream is = getInpuStream(name)) {
 			return Base64Utils.encodeToString(DigestUtils.md5(is));

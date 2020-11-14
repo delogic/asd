@@ -98,6 +98,6 @@ public interface ContentManager {
      * @param name
      * @return Md5 in Base64 encoded
      */
-    String getMd5Base64(String name);
+    //String getMd5Base64(String name);
 
 }

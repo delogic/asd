@@ -248,7 +248,7 @@ public class OracleContentManager implements ContentManager {
         return sdf.format(data);
     }
 
-	@Override
+	//@Override
 	public String getMd5Base64(String name) {
 		GetObjectResponse response = client.getObject(
 	            GetObjectRequest.builder()

@@ -253,7 +253,7 @@ public class S3ContentManager implements ContentManager {
         this.defaultPermission = defaultPermission;
     }
 
-	@Override
+	//@Override
 	public String getMd5Base64(String name) {
 		return client.getObject(new GetObjectRequest(bucket, name)).getObjectMetadata().getContentMD5();
 	}
