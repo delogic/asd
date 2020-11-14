@@ -38,7 +38,7 @@ public class SpringTestConfig extends EclipseLinkJpaConfig {
     public DataSource rootDataSource() {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
         ds.setDriverClassName(org.postgresql.Driver.class.getName());
-        ds.setUrl("jdbc:postgresql://192.168.0.197:5432/postgres");
+        ds.setUrl("jdbc:postgresql://localhost:5432/postgres");
         ds.setUsername("postgres");
         ds.setPassword("manager");
         return ds;
@@ -48,7 +48,7 @@ public class SpringTestConfig extends EclipseLinkJpaConfig {
     public DataSource sqlDataSource() {
         org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
         ds.setDriverClassName(org.postgresql.Driver.class.getName());
-        ds.setUrl("jdbc:postgresql://192.168.0.197:5432/asd");
+        ds.setUrl("jdbc:postgresql://localhost:5432/asd");
         ds.setUsername("postgres");
         ds.setPassword("manager");
         return ds;
