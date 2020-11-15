@@ -23,6 +23,8 @@ import br.com.delogic.asd.datetime.LocalDateTimeManager;
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeManager")
 public abstract class EclipseLinkJpaConfig {
 
+    public boolean createDatabaseScripts = false;
+
     public abstract String getPersistenceUnitName();
 
     public String getPersistenceXmlLocation() {
@@ -55,6 +57,12 @@ public abstract class EclipseLinkJpaConfig {
         map.put("eclipselink.logging.parameters", "true");
         map.put("eclipselink.logging.exceptions", "true");
         map.put("eclipselink.logging.logger", EclipselinkSlf4jLogger.class.getName());
+        
+        if (createDatabaseScripts) {
+            map.put("eclipselink.ddl-generation", "create-tables");
+            map.put("eclipselink.ddl-generation.output-mode", "sql-script");
+        }
+        
         return map;
     }
 

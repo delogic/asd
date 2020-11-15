@@ -6,11 +6,11 @@ import java.util.List;
 import br.com.delogic.jfunk.Find;
 import br.com.delogic.jfunk.When;
 
-public class TimeHouseKeepingJob extends HouseKeepingJobBase {
+public class TimeHousekeepingJob extends HousekeepingJobBase {
 
 	protected Double thresholdHours;
 
-	public TimeHouseKeepingJob(String directory, Double thresholdHours) {
+	public TimeHousekeepingJob(String directory, Double thresholdHours) {
 		super(directory);
 		this.thresholdHours = thresholdHours;
 	}

@@ -3,7 +3,7 @@ package br.com.delogic.asd.housekeeping;
 import java.io.File;
 import java.util.Comparator;
 
-public interface HouseKeepingJob extends Runnable {
+public interface HousekeepingJob extends Runnable {
 
 	Comparator<File> LAST_MODIFIED_DESC = new Comparator<File>() {
 		@Override

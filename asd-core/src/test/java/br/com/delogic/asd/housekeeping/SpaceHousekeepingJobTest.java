@@ -9,9 +9,9 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
 
-public class TimeHouseKeepingJobTest {
+public class SpaceHousekeepingJobTest {
 
-	private HouseKeepingJob hk;
+	private SpaceHousekeepingJob hk;
 
 	@After
 	public void clean() {
@@ -21,8 +21,8 @@ public class TimeHouseKeepingJobTest {
 
 	@Test
 	public void deveExcluirArquivos() throws Exception {
-		dadoArquivosEmMBPorTempo(10, 0);
-		dadoHouseKeepingTempoMinutos(5.1);
+		dadoArquivosEmMB(10, 1);
+		dadoHouseKeepingEspacoMB(5);
 		quandoExecutarHousekeeping();
 		entaoArquivosRemanecentes(5);
 		entaoArquivosRemanecente("arquivo.txt5");
@@ -34,8 +34,8 @@ public class TimeHouseKeepingJobTest {
 
 	@Test
 	public void deveExcluirArquivosSomente1Vez() throws Exception {
-		dadoArquivosEmMBPorTempo(10, 0);
-		dadoHouseKeepingTempoMinutos(5.1);
+		dadoArquivosEmMB(10, 1);
+		dadoHouseKeepingEspacoMB(5);
 		quandoExecutarHousekeeping();
 		quandoExecutarHousekeeping();
 		quandoExecutarHousekeeping();
@@ -51,8 +51,8 @@ public class TimeHouseKeepingJobTest {
 
 	@Test
 	public void deveExcluirArquivos1Apenas() throws Exception {
-		dadoArquivosEmMBPorTempo(10, 0);
-		dadoHouseKeepingTempoMinutos(9.1);
+		dadoArquivosEmMB(10, 1);
+		dadoHouseKeepingEspacoMB(9);
 		quandoExecutarHousekeeping();
 		entaoArquivosRemanecentes(9);
 		entaoArquivosRemanecente("arquivo.txt1");
@@ -68,8 +68,8 @@ public class TimeHouseKeepingJobTest {
 
 	@Test
 	public void deveExcluirNenhumArquivo() throws Exception {
-		dadoArquivosEmMBPorTempo(10, 0);
-		dadoHouseKeepingTempoMinutos(10.1);
+		dadoArquivosEmMB(10, 1);
+		dadoHouseKeepingEspacoMB(10);
 		quandoExecutarHousekeeping();
 		entaoArquivosRemanecentes(10);
 		entaoArquivosRemanecente("arquivo.txt0");
@@ -86,8 +86,8 @@ public class TimeHouseKeepingJobTest {
 
 	@Test
 	public void deveExcluirTodosArquivos() throws Exception {
-		dadoArquivosEmMBPorTempo(10, 1);
-		dadoHouseKeepingTempoMinutos(0.9999);
+		dadoArquivosEmMB(10, 1);
+		dadoHouseKeepingEspacoMB(0.9999);
 		quandoExecutarHousekeeping();
 		entaoArquivosRemanecentes(0);
 	}
@@ -96,13 +96,12 @@ public class TimeHouseKeepingJobTest {
 		assertTrue(new File(getTempDir() + string).exists());
 	}
 
-	private void dadoArquivosEmMBPorTempo(int qtde, int tamanho) throws Exception {
+	private void dadoArquivosEmMB(int qtde, int tamanho) throws Exception {
 
 		for (int i = 0; i < qtde; i++) {
 			File arquivo = new File(getTempDir() + "arquivo.txt" + i);
 			System.out.println("gravando arquivos:" + arquivo.getAbsolutePath());
 			FileUtils.writeStringToFile(arquivo, getTextoEmMB(tamanho));
-			arquivo.setLastModified(System.currentTimeMillis() - (qtde - i) * 60 * 1000);
 		}
 
 	}
@@ -123,8 +122,8 @@ public class TimeHouseKeepingJobTest {
 		return sb.toString();
 	}
 
-	private void dadoHouseKeepingTempoMinutos(double i) {
-		hk = new TimeHouseKeepingJob(getTempDir(), i / 60);
+	private void dadoHouseKeepingEspacoMB(double i) {
+		hk = new SpaceHousekeepingJob(getTempDir(), i / 1024);
 	}
 
 	private void quandoExecutarHousekeeping() {

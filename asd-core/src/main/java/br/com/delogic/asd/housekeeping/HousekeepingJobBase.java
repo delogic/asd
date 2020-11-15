@@ -9,14 +9,20 @@ import org.slf4j.LoggerFactory;
 
 import br.com.delogic.jfunk.Has;
 
-public abstract class HouseKeepingJobBase implements HouseKeepingJob {
+public abstract class HousekeepingJobBase implements HousekeepingJob {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	protected final String directoryPath;
+	protected boolean dryRun = false;
 
-	public HouseKeepingJobBase(String directory) {
-		this.directoryPath = directory;
+	public HousekeepingJobBase(String directory) {
+		this(directory, false);
 	}
+	
+	public HousekeepingJobBase(String directory, boolean dryRun) {
+        this.directoryPath = directory;
+        this.dryRun = dryRun;
+    }
 
 	public void run() {
 		List<File> files = listFilesFromDirectory();
@@ -58,6 +64,10 @@ public abstract class HouseKeepingJobBase implements HouseKeepingJob {
 	}
 
 	public boolean deleteFile(File toBeDeleted) {
+	    //if testing
+	    if (dryRun) {
+	        return true;
+	    }
 		try {
 			return toBeDeleted.delete();
 		} catch (Exception e) {

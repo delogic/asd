@@ -7,11 +7,11 @@ import java.util.List;
 import br.com.delogic.jfunk.Find;
 import br.com.delogic.jfunk.When;
 
-public class SpaceHouseKeepingJob extends HouseKeepingJobBase {
+public class SpaceHousekeepingJob extends HousekeepingJobBase {
 
 	protected Double thresholdGBs;
 
-	public SpaceHouseKeepingJob(String directory, Double thresholdGBs) {
+	public SpaceHousekeepingJob(String directory, Double thresholdGBs) {
 		super(directory);
 		this.thresholdGBs = thresholdGBs;
 	}
