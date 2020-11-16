@@ -18,12 +18,12 @@ public class TimeHousekeepingJob extends HousekeepingJobBase {
 	@Override
 	public List<File> filterFilesToBeDeleted(List<File> files) {
 
-		final long dataCorte = (long) (System.currentTimeMillis() - (thresholdHours * 60 * 60 * 1000));
+		final long thresholdCut = (long) (System.currentTimeMillis() - (thresholdHours * 60 * 60 * 1000));
 
 		return Find.all(files, new When<File>() {
 			@Override
 			public boolean found(File e) {
-				return e.isFile() && e.lastModified() < dataCorte;
+				return e.isFile() && e.lastModified() < thresholdCut;
 			}
 		});
 	}

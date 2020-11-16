@@ -79,9 +79,6 @@ public interface ContentManager {
      * store this file he should create it passing the InputStream of the Zip
      * temporary file to the create method himself.
      *
-     * The file will be stored automatically and the file name will follow the
-     * convention of the implementation.
-     *
      * @param contentZipEntries
      * @return The zip file name to get and download the new zipped content.
      */
