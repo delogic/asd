@@ -1,5 +1,6 @@
 package br.com.delogic.asd.content;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class LocalContentManagerTest extends Assert {
 
     @Before
     public void init() {
-        contentManager = new LocalContentManager(new java.io.File(System.getProperty("java.io.tmpdir")), new TimeIterator(),
+        contentManager = new LocalContentManager(new java.io.File(System.getProperty("java.io.tmpdir") + File.separator + "localcontentmanager"), new TimeIterator(),
             "/testcontext");
         iss = new ArrayList<ContentZipEntry>();
         zipFile = null;

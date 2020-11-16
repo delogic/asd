@@ -248,4 +248,15 @@ public class OracleContentManager implements ContentManager {
         return sdf.format(data);
     }
 
+	//@Override
+	public String getMd5Base64(String name) {
+		GetObjectResponse response = client.getObject(
+	            GetObjectRequest.builder()
+	                .bucketName(bucket)
+	                .namespaceName(namespace)
+	                .objectName(name)
+	                .build());
+		return response.getContentMd5();
+	}
+
 }

@@ -83,4 +83,14 @@ public class TransactionalContentManager implements ContentManager {
         return newFileName;
     }
 
+//	@Override
+	public String getMd5Base64(String name) {
+		/*String md5Hex = tempContentManager.getMd5Base64(name);
+		if (!Has.content(md5Hex)) {
+			md5Hex = finalContentManager.getMd5Base64(name);
+		}
+		return md5Hex;*/
+	    throw new UnsupportedOperationException("not implemented yet");
+	}
+
 }

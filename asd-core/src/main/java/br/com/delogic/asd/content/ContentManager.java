@@ -74,9 +74,10 @@ public interface ContentManager {
     /**
      * Creates a zip and returns its file name. This name can be used to get a
      * new InputStream to the zipped package or to get the URI.
-     *
-     * The file will be stored automatically and the file name will follow the
-     * convention of the implementation.
+     * 
+     * It must be a temporary file therefore not stored. If a user wants to
+     * store this file he should create it passing the InputStream of the Zip
+     * temporary file to the create method himself.
      *
      * @param contentZipEntries
      * @return The zip file name to get and download the new zipped content.
@@ -92,5 +93,14 @@ public interface ContentManager {
      * @return a new file name named file-something.extension
      */
     String commit(String name);
+
+    /**
+     * Returns the MD5 for the inputStream content in Base64 format. Prefer
+     * Base64Utils from Spring to convert.
+     * 
+     * @param name
+     * @return Md5 in Base64 encoded
+     */
+    // String getMd5Base64(String name);
 
 }

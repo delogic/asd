@@ -1,3 +1,4 @@
+
 package br.com.delogic.asd.exception;
 
 import org.springframework.util.Assert;
