@@ -96,7 +96,9 @@ public class LocalContentManager implements ContentManager {
 
     public InputStream getInpuStream(String name) throws Exception {
         if (Has.content(name) && name.startsWith(TEMP_ZIP_PREFIX) && name.endsWith(TEMP_ZIP_SUFIX)) {
-            File tempZipFile = File.createTempFile(name.replace(TEMP_ZIP_SUFIX, ""), TEMP_ZIP_SUFIX);
+        	String tempDir = System.getProperty("java.io.tmpdir");
+        	tempDir = tempDir.endsWith(File.separator) ? tempDir: tempDir + File.separator;  
+            File tempZipFile = new File(tempDir + name);
             return new FileInputStream(tempZipFile);
         }
         return new FileInputStream(absolutePath + File.separatorChar + name);
