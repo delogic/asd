@@ -70,6 +70,7 @@ public class LocalContentManagerTest extends Assert {
         try {
             InputStream is = contentManager.getInpuStream(zipFile);
             assertNotNull(is);
+            assertNotEquals(-1,  is.read());
             is.close();
         } catch (Exception e) {
             fail(e.getMessage());
