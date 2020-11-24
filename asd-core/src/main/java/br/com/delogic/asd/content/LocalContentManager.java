@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipOutputStream;
@@ -124,39 +125,57 @@ public class LocalContentManager implements ContentManager {
 
         ZipOutputStream zos = null;
         FileOutputStream fos = null;
-        File zipFile = null;
-
+        File finalZipFile = null;
+        
         try {
-            zipFile = File.createTempFile(TEMP_ZIP_PREFIX + iterator.next().toString(), TEMP_ZIP_SUFIX);
-            fos = new FileOutputStream(zipFile);
+            File tempZipFile = File.createTempFile(iterator.next().toString(), null);
+            fos = new FileOutputStream(tempZipFile);
             zos = new ZipOutputStream(fos);
             byte[] buffer = new byte[1024];
             int len;
+            
+            Arrays.sort(contentZipEntries, new Comparator<ContentZipEntry>() {
+                @Override
+                public int compare(ContentZipEntry o1, ContentZipEntry o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
 
+            StringBuilder md5s = new StringBuilder();
+            
             for (ContentZipEntry contentZipEntry : contentZipEntries) {
                 zos.putNextEntry(contentZipEntry);
                 InputStream in = contentZipEntry.getInputStream();
                 while ((len = in.read(buffer)) > 0) {
                     zos.write(buffer, 0, len);
                 }
+                md5s.append(DigestUtils.md5Hex(in));
                 in.close();
                 zos.closeEntry();
             }
+            zos.close();
+            fos.close();
+            
+            String md5Hex = DigestUtils.md5Hex(md5s.toString());
+             
+            String tempDir = System.getProperty("java.io.tmpdir");
+            tempDir = tempDir.endsWith(File.separator) ? tempDir: tempDir + File.separator;  
+            finalZipFile = new File(tempDir + TEMP_ZIP_PREFIX + md5Hex + TEMP_ZIP_SUFIX);
+            if (finalZipFile.exists()) {
+                //change lastmodified so we don't delete if someone's downloading
+                finalZipFile.setLastModified(System.currentTimeMillis());
+                tempZipFile.delete();
+            } else {
+                tempZipFile.renameTo(finalZipFile);
+            }
+             
+            return finalZipFile.getName();
 
         } catch (Exception e) {
             throw new UnexpectedApplicationException("Exception when creating a zip file with entries "
                 + Arrays.toString(contentZipEntries), e);
-        } finally {
-            try {
-                zos.close();
-                fos.close();
-            } catch (IOException e) {
-                throw new UnexpectedApplicationException("Exception when closing the zip file with entries "
-                    + Arrays.toString(contentZipEntries), e);
-            }
         }
-
-        return zipFile.getName();
+        
     }
 
     private void validateFiles(ContentZipEntry[] contentZipEntries) {
