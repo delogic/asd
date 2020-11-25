@@ -5,13 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Base64Utils;
@@ -132,7 +135,7 @@ public class LocalContentManager implements ContentManager {
             fos = new FileOutputStream(tempZipFile);
             zos = new ZipOutputStream(fos);
             byte[] buffer = new byte[1024];
-            int len;
+            int read;
             
             Arrays.sort(contentZipEntries, new Comparator<ContentZipEntry>() {
                 @Override
@@ -141,22 +144,23 @@ public class LocalContentManager implements ContentManager {
                 }
             });
 
-            StringBuilder md5s = new StringBuilder();
-            
+            MessageDigest digest = MessageDigest.getInstance(MessageDigestAlgorithms.MD5);
+                        
             for (ContentZipEntry contentZipEntry : contentZipEntries) {
                 zos.putNextEntry(contentZipEntry);
                 InputStream in = contentZipEntry.getInputStream();
-                while ((len = in.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
+                while ((read = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, read);
+                    digest.update(buffer, 0, read);
                 }
-                md5s.append(DigestUtils.md5Hex(in));
                 in.close();
                 zos.closeEntry();
             }
             zos.close();
             fos.close();
             
-            String md5Hex = DigestUtils.md5Hex(md5s.toString());
+            String md5Hex = Hex.encodeHexString(digest.digest());
+            System.err.println(md5Hex);
              
             String tempDir = System.getProperty("java.io.tmpdir");
             tempDir = tempDir.endsWith(File.separator) ? tempDir: tempDir + File.separator;  
