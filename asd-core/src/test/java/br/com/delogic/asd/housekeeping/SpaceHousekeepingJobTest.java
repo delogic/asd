@@ -6,14 +6,14 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SpaceHousekeepingJobTest {
 
     private SpaceHousekeepingJob hk;
 
-    @After
+    @Before
     public void clean() {
         File tempDir = new File(getTempDir());
         tempDir.delete();

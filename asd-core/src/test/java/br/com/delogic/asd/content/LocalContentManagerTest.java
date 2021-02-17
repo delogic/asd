@@ -133,7 +133,7 @@ public class LocalContentManagerTest extends Assert {
     private void givenZipLastModificationIs(int i) throws Exception {
         File zip = new File(getTempDir() + zipFile);
         assertTrue("arquivo não existe:" + zip.getName(), zip.exists());
-        zip.setLastModified(1);
+        zip.setLastModified(i);
         assertEquals(i, zip.lastModified());
     }
 
