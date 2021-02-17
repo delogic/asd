@@ -147,7 +147,7 @@ public class SpaceHousekeepingJobTest {
         assertEquals(i, arquivos.length);
 
         for (File file : arquivos) {
-            logger.debug("Arquivo remanescente:" + file.getAbsolutePath() + " : existe?" + file.exists());
+            logger.debug("Arquivo remanescente:" + file.getAbsolutePath() + " : existe?" + file.exists() + ", Last Modified:" + file.lastModified());
         }
 
     }
