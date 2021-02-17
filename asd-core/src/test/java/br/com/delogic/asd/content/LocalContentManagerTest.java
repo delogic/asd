@@ -113,7 +113,7 @@ public class LocalContentManagerTest extends Assert {
         givenStartTime();
         givenTheResource("file.txt", "test-resources/file.txt");
         givenZipIsCreated();
-        givenZipLastModificationIs(1);
+        givenZipLastModificationIs(0);
         iss = new ArrayList<ContentZipEntry>();
         givenTheResource("file2.txt", "test-resources/file.txt");
         whenCreatingZip();
