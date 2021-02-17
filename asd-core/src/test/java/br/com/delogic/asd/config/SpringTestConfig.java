@@ -11,6 +11,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.mock.web.MockServletContext;
@@ -27,6 +28,7 @@ import br.com.delogic.asd.repository.jpa.eclipselink.EclipseLinkJpaConfig;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "br.com.delogic.asd", repositoryFactoryBeanClass = EntityRepositoryFactoryBean.class)
+@PropertySource("test.properties")
 public class SpringTestConfig extends EclipseLinkJpaConfig {
 
     @Override

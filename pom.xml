@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.delogic</groupId>
     <artifactId>asd</artifactId>
     <packaging>pom</packaging>
-	<!--alterar versao de todos com: mvn versions:set -DgenerateBackupPoms=false | executar na raiz do projeto -->
+    <!--alterar versao de todos com: mvn versions:set -DgenerateBackupPoms=false 
+        | executar na raiz do projeto -->
     <version>0.0.5-SNAPSHOT</version>
     <name>Arquitetura de Serviços Delogic</name>
 
@@ -16,7 +19,7 @@
         <module>asd-test</module>
         <module>asd-amazon-cloud</module>
         <module>asd-oracle-cloud</module>
-	</modules>
+    </modules>
 
     <properties>
         <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
@@ -25,11 +28,14 @@
         <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
         <jackson.version>2.2.3</jackson.version>
         <org.eclisepselink.version>2.5.1</org.eclisepselink.version>
-		<aws.version>1.4.5</aws.version>
-		<oracle.sdk.version>1.17.5</oracle.sdk.version>
-		<slf4j.version>1.5.8</slf4j.version>
-		<log4j.version>1.2.14</log4j.version>
-        
+        <aws.version>1.4.5</aws.version>
+        <oracle.sdk.version>1.17.5</oracle.sdk.version>
+        <slf4j.version>1.5.8</slf4j.version>
+        <log4j.version>1.2.14</log4j.version>
+        <com.auth0.version>3.8.1</com.auth0.version>
+        <org.bouncycastle>1.60</org.bouncycastle>
+        <javax.mail.version>1.6.2</javax.mail.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -201,9 +207,9 @@
                 <version>1.2</version>
             </dependency>
             <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>mail</artifactId>
-                <version>1.4.3</version>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
             </dependency>
             <!-- =============================================== -->
             <!-- TESTING -->
@@ -268,6 +274,16 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.jpa</artifactId>
                 <version>${org.eclisepselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${com.auth0.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${org.bouncycastle}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
