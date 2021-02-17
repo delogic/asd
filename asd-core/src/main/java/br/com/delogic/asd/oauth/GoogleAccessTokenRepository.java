@@ -16,7 +16,6 @@ import org.bouncycastle.util.io.pem.PemReader;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -104,7 +103,7 @@ public class GoogleAccessTokenRepository implements AccessTokenRepository {
         this.expiresAt = env.getProperty("oauth.accesstoken.expiresat", Integer.class, 3600);
         this.mapper = new ObjectMapper();
 
-        InputStream jsonFile = new ClassPathResource(env.getRequiredProperty("oauth.accesstoken.file")).getInputStream();
+        InputStream jsonFile = ctx.getResource(env.getRequiredProperty("oauth.accesstoken.file")).getInputStream();
         this.params = mapper.readValue(jsonFile, Map.class);
         close(jsonFile);
 
