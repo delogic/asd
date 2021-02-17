@@ -8,7 +8,7 @@ public interface HousekeepingJob extends Runnable {
     Comparator<File> LAST_MODIFIED_DESC = new Comparator<File>() {
         @Override
         public int compare(File o1, File o2) {
-            return o1.lastModified() < o2.lastModified() ? 1 : o1.lastModified() > o2.lastModified() ? -1 : o1.getName().compareToIgnoreCase(o2.getName());
+            return o1.lastModified() < o2.lastModified() ? 1 : o1.lastModified() > o2.lastModified() ? -1 : o2.getName().compareToIgnoreCase(o1.getName());
         }
     };
 
