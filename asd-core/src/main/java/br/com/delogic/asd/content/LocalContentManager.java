@@ -160,7 +160,6 @@ public class LocalContentManager implements ContentManager {
             fos.close();
             
             String md5Hex = Hex.encodeHexString(digest.digest());
-            System.err.println(md5Hex);
              
             String tempDir = System.getProperty("java.io.tmpdir");
             tempDir = tempDir.endsWith(File.separator) ? tempDir: tempDir + File.separator;  

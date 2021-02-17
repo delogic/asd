@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import br.com.delogic.asd.exception.ContentException;
@@ -25,6 +27,8 @@ public class LocalContentManagerTest extends Assert {
     private Exception thrown;
 
     private long startTime;
+    
+    private Logger logger = LoggerFactory.getLogger(LocalContentManager.class);
 
     @Before
     public void init() {
@@ -62,6 +66,7 @@ public class LocalContentManagerTest extends Assert {
 
     private void whenCreatingZip() {
         try {
+            Thread.sleep(1000);
             zipFile = contentManager.createZip(iss.toArray(new ContentZipEntry[iss.size()]));
         } catch (Exception e) {
             thrown = e;
@@ -123,7 +128,9 @@ public class LocalContentManagerTest extends Assert {
     private void thenLastModificationIsAfterStartTime() {
         File zip = new File(getTempDir() + zipFile);
         assertTrue("arquivo não existe:" + zip.getName(), zip.exists());
-        assertTrue(zip.lastModified() > startTime);
+        logger.debug("File:" + zip.getAbsolutePath() + ", Last Modified:" + zip.lastModified());
+        assertTrue("Start Time:" + startTime, zip.lastModified() > startTime);
+        
     }
 
     private void givenStartTime() {
