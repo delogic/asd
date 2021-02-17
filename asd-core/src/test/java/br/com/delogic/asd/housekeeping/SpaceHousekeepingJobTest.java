@@ -97,7 +97,8 @@ public class SpaceHousekeepingJobTest {
     }
 
     private void entaoArquivosRemanecente(String arquivo) {
-        assertTrue("arquivo não existe:" + arquivo, new File(getTempDir() + arquivo).exists());
+        File file = new File(getTempDir() + arquivo);
+        assertTrue("arquivo não existe:" + file.getAbsolutePath(), file.exists());
     }
 
     private void dadoArquivosEmMB(int qtde, int tamanho) throws Exception {
@@ -140,7 +141,7 @@ public class SpaceHousekeepingJobTest {
         assertEquals(i, arquivos.length);
 
         for (File file : arquivos) {
-            logger.debug("Arquivo remanescente:" + file.getName());
+            logger.debug("Arquivo remanescente:" + file.getAbsolutePath() + " : existe?" + file.exists());
         }
 
     }
