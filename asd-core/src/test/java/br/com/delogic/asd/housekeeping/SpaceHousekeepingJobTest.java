@@ -98,6 +98,7 @@ public class SpaceHousekeepingJobTest {
 
     private void entaoArquivosRemanecente(String arquivo) {
         File file = new File(getTempDir() + arquivo);
+        logger.debug("verificando se arquivo existe:" + file.getAbsolutePath());
         assertTrue("arquivo não existe:" + file.getAbsolutePath(), file.exists());
         logger.debug("arquivo existe:" + file.getAbsolutePath());
     }
@@ -117,7 +118,11 @@ public class SpaceHousekeepingJobTest {
         String dir = System.getProperty("java.io.tmpdir");
         dir = dir.endsWith("/") ? dir : dir + File.separator;
         dir += "temphousekeeping" + File.separator;
-        new File(dir).mkdirs();
+        
+        File directory = new File(dir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
         return dir;
     }
 
