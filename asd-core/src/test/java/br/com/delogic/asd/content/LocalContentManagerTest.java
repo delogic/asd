@@ -139,7 +139,7 @@ public class LocalContentManagerTest extends Assert {
 
     private String getTempDir() {
         String tempDir = System.getProperty("java.io.tmpdir");
-        return tempDir.endsWith(File.separator) ? tempDir + File.separator : tempDir;
+        return tempDir.endsWith(File.separator) ? tempDir : tempDir + File.separator;
     }
 
     private void givenZipIsCreated() {

@@ -102,6 +102,7 @@ public class SpaceHousekeepingJobTest {
             File arquivo = new File(getTempDir() + "arquivo.txt" + i);
             System.out.println("gravando arquivos:" + arquivo.getAbsolutePath());
             FileUtils.writeStringToFile(arquivo, getTextoEmMB(tamanho));
+            Thread.sleep(10);
         }
 
     }
