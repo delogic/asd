@@ -1,7 +1,6 @@
 package br.com.delogic.asd.content;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class LocalContentManagerTest extends Assert {
     @Before
     public void init() {
         contentManager = new LocalContentManager(
-            new java.io.File(System.getProperty("java.io.tmpdir") + File.separator + "localcontentmanager"), new TimeIterator(),
+            new java.io.File(getTempDir() + "localcontentmanager"), new TimeIterator(),
             "/testcontext");
         iss = new ArrayList<ContentZipEntry>();
         zipFile = null;
@@ -122,7 +121,7 @@ public class LocalContentManagerTest extends Assert {
     }
 
     private void thenLastModificationIsAfterStartTime() {
-        File zip = new File(System.getProperty("java.io.tmpdir") + zipFile);
+        File zip = new File(getTempDir() + zipFile);
         assertTrue("arquivo não existe:" + zip.getName(), zip.exists());
         assertTrue(zip.lastModified() > startTime);
     }
@@ -132,10 +131,15 @@ public class LocalContentManagerTest extends Assert {
     }
 
     private void givenZipLastModificationIs(int i) throws Exception {
-        File zip = new File(System.getProperty("java.io.tmpdir") + zipFile);
+        File zip = new File(getTempDir() + zipFile);
         assertTrue("arquivo não existe:" + zip.getName(), zip.exists());
         zip.setLastModified(1);
         assertEquals(i, zip.lastModified());
+    }
+
+    private String getTempDir() {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        return tempDir.endsWith(File.separator) ? tempDir + File.separator : tempDir;
     }
 
     private void givenZipIsCreated() {
