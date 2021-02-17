@@ -8,10 +8,14 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SpaceHousekeepingJobTest {
 
     private SpaceHousekeepingJob hk;
+
+    private final Logger logger = LoggerFactory.getLogger(SpaceHousekeepingJobTest.class);
 
     @Before
     public void clean() {
@@ -100,7 +104,7 @@ public class SpaceHousekeepingJobTest {
 
         for (int i = 0; i < qtde; i++) {
             File arquivo = new File(getTempDir() + "arquivo.txt" + i);
-            System.out.println("gravando arquivos:" + arquivo.getAbsolutePath());
+            logger.debug("gravando arquivos:" + arquivo.getAbsolutePath());
             FileUtils.writeStringToFile(arquivo, getTextoEmMB(tamanho));
             Thread.sleep(10);
         }
@@ -134,6 +138,11 @@ public class SpaceHousekeepingJobTest {
     private void entaoArquivosRemanecentes(int i) {
         File[] arquivos = new File(getTempDir()).listFiles();
         assertEquals(i, arquivos.length);
+
+        for (File file : arquivos) {
+            logger.debug("Arquivo remanescente:" + file.getName());
+        }
+
     }
 
 }
