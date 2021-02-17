@@ -53,7 +53,7 @@ public abstract class HousekeepingJobBase implements HousekeepingJob {
 
 	public void logDeletedFile(File toBeDeleted) {
 		if (log.isDebugEnabled()) {
-			log.debug("Deleted file:" + toBeDeleted.getName() + ", Last Modified:" + toBeDeleted.lastModified());
+			log.debug("Deleted file:" + toBeDeleted.getName());
 		}
 	}
 
