@@ -54,10 +54,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <!-- only for java8 -->
-                        <!-- <configuration> -->
-                        <!-- <additionalparam>-Xdoclint:none</additionalparam> -->
-                        <!-- </configuration> -->
+                        <configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
