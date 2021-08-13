@@ -33,7 +33,7 @@
         <slf4j.version>1.5.8</slf4j.version>
         <log4j.version>1.2.14</log4j.version>
         <com.auth0.version>3.8.1</com.auth0.version>
-        <org.bouncycastle>1.60</org.bouncycastle>
+        <org.bouncycastle>1.67</org.bouncycastle>
         <javax.mail.version>1.6.2</javax.mail.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
