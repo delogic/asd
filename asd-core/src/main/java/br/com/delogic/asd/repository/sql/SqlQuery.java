@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 import br.com.delogic.asd.repository.Criteria;
 import br.com.delogic.asd.repository.QueryRepository;
 import br.com.delogic.asd.repository.RepositoryData;
+import br.com.delogic.asd.repository.datasource.LocalSingleConnectionDataSource;
 import br.com.delogic.jfunk.Has;
 import br.com.delogic.jfunk.data.Result;
 
@@ -34,7 +35,8 @@ import br.com.delogic.jfunk.data.Result;
  * "queries" and retrieve information from databases, formatted accordingly to
  * the mapped type. A {@code Query} can be create in an XML file our coded into
  * a Java class (less desirable). Keep in mind the Query object is a stateless
- * and reusable component which can be {@code @Inject}-ed into another services. <br>
+ * and reusable component which can be {@code @Inject}-ed into another services.
+ * <br>
  * <br>
  * After creating a {@code Query} you must provide at least the "select" and
  * "from" statements and may also provide other features like "where", "groupBy"
@@ -45,8 +47,8 @@ import br.com.delogic.jfunk.data.Result;
  * the statement to be inserted as an "and" filter to the end of the "where"
  * statement.<br>
  * <br>
- * The field "orders" is similar to the field "and" except it'll append
- * "order by" statements to the end of the {@code Query}. <br>
+ * The field "orders" is similar to the field "and" except it'll append "order
+ * by" statements to the end of the {@code Query}. <br>
  * <br>
  * The field "returnType" is required so {@code Query} objects can map the
  * result values into {@code List<T>} of the referenced type. The type can be a
@@ -141,6 +143,16 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      */
     private Map<String, PermittedParameterType> registeredParameters = new HashMap<String, SqlQuery.PermittedParameterType>();
 
+    /**
+     * Prepare query hints and operations to be executed
+     */
+    private String preQuery;
+
+    /**
+     * Executes after the query has been executed
+     */
+    private String postQuery;
+
     /*
      * Internal control of p
      */
@@ -155,7 +167,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     private static final String GROUP_STATEMENT = " group by ";
     private static final String AND_OPERATOR = " and ";
 
-    private NamedParameterJdbcTemplate template;
+    private NamedParameterJdbcTemplate sharedJdbc;
     private RowMapper<T> rowMapper;
 
     private final SqlQueryRangeBuilder rangeBuilder;
@@ -194,7 +206,9 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         Assert.notNull(returnType, "ReturnType is mandatory");
         Assert.notNull(dataSource, "DataSource is mandatory");
 
-        template = new NamedParameterJdbcTemplate(dataSource);
+        if (!Has.content(preQuery, postQuery)) {
+            sharedJdbc = new NamedParameterJdbcTemplate(dataSource);
+        }
 
         mandatoryParameters = new HashMap<String, SqlQuery.PermittedParameterType>();
 
@@ -220,10 +234,9 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         if (returnType.equals(String.class)) {
             rowMapper = new StringRowMapper<T>();
 
-        }else if(returnType.equals(Boolean.class)){
+        } else if (returnType.equals(Boolean.class)) {
             rowMapper = new BooleanRowMapper<T>();
-        }
-        else if (returnType.equals(Integer.class)) {
+        } else if (returnType.equals(Integer.class)) {
             rowMapper = new IntegerRowMapper<T>();
 
         } else {
@@ -271,21 +284,48 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     public List<T> getList(Criteria criteria) {
         maybeInitializeQuery();
 
-        Map<String, Object> params = extractParams(criteria);
-        String composedQuery = composeQuery(criteria, params);
-
-        if (criteria != null) {
-            composedQuery = rangeBuilder.buildRangeQuery(composedQuery, criteria);
-        }
+        final Map<String, Object> params = extractParams(criteria);
+        final String composedQuery = criteria == null ? composeQuery(criteria, params)
+                                                      : rangeBuilder
+                                                          .buildRangeQuery(
+                                                              composeQuery(criteria, params), criteria);
 
         maybeLogQuery(composedQuery, params);
 
-        List<T> data = template.query(composedQuery, params, rowMapper);
+        List<T> data = run(new WithJdbc<List<T>>() {
+            @Override
+            public List<T> with(NamedParameterJdbcTemplate template) {
+                return template.query(composedQuery, params, rowMapper);
+            }
+        });
 
         maybeLogQueryReturn(data);
 
         return data;
 
+    }
+
+    private <R> R run(WithJdbc<R> runner) {
+        if (sharedJdbc != null) {
+            return runner.with(sharedJdbc);
+        }
+
+        LocalSingleConnectionDataSource localDataSource = new LocalSingleConnectionDataSource(dataSource);
+        NamedParameterJdbcTemplate localJdbc = new NamedParameterJdbcTemplate(localDataSource);
+        try {
+            if (Has.content(preQuery)) {
+                localJdbc.getJdbcOperations().execute(preQuery);
+            }
+
+            R result = runner.with(localJdbc);
+
+            if (Has.content(postQuery)) {
+                localJdbc.getJdbcOperations().execute(postQuery);
+            }
+            return result;
+        } finally {
+            localDataSource.releaseConnection();
+        }
     }
 
     private void maybeLogQueryReturn(List<T> data) {
@@ -303,8 +343,9 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> extractParams(Criteria criteria) {
-        return (Map<String, Object>) (criteria == null || criteria.getParameters() == null ? Collections.emptyMap() : criteria
-            .getParameters());
+        return (Map<String, Object>) (criteria == null || criteria.getParameters() == null ? Collections.emptyMap()
+                                                                                           : criteria
+                                                                                               .getParameters());
     }
 
     /**
@@ -330,18 +371,22 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     public Result<T> getFirst(Criteria criteria) {
         maybeInitializeQuery();
 
-        Map<String, Object> params = extractParams(criteria);
+        final Map<String, Object> params = extractParams(criteria);
 
         // getting only the first result
         criteria.setLimit(1L);
 
-        String composedQuery = composeQuery(criteria, params);
-
-        composedQuery = rangeBuilder.buildRangeQuery(composedQuery, criteria);
+        final String composedQuery = rangeBuilder.buildRangeQuery(
+            composeQuery(criteria, params), criteria);
 
         maybeLogQuery(composedQuery, params);
 
-        List<T> data = template.query(composedQuery, params, rowMapper);
+        List<T> data = run(new WithJdbc<List<T>>() {
+            @Override
+            public List<T> with(NamedParameterJdbcTemplate template) {
+                return template.query(composedQuery, params, rowMapper);
+            }
+        });
 
         maybeLogQueryReturn(data);
 
@@ -365,13 +410,18 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         maybeInitializeQuery();
 
-        Map<String, Object> params = extractParams(criteria);
+        final Map<String, Object> params = extractParams(criteria);
 
-        String composedQuery = composeCount(criteria);
+        final String composedQuery = composeCount(criteria);
 
         maybeLogQuery(composedQuery, params);
 
-        long count = template.queryForObject(composedQuery, params, Long.class);
+        long count = run(new WithJdbc<Long>() {
+            @Override
+            public Long with(NamedParameterJdbcTemplate template) {
+                return template.queryForObject(composedQuery, params, Long.class);
+            }
+        });
 
         if (logger.isDebugEnabled()) {
             logger.debug("Itens found:" + count);
@@ -495,14 +545,13 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
         Map<String, Object> params = queryParameters != null && Has.content(queryParameters.getParameters()) ? queryParameters
             .getParameters()
-                                                                                                            : null;
+                                                                                                             : null;
 
         if (Has.content(parameterizedAnd) && Has.content(params)) {
 
             sbQuery.append(!Has.content(where) ? WHERE_STATEMENT : AND_OPERATOR);
 
-            for (Iterator<String> it =
-                params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
                 if (!parameterizedAnd.containsKey(key)) continue;
 
@@ -789,6 +838,16 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         return this;
     }
 
+    public SqlQuery<T> setPreQuery(String preQuery) {
+        this.preQuery = preQuery;
+        return this;
+    }
+
+    public SqlQuery<T> setPostQuery(String postQuery) {
+        this.postQuery = postQuery;
+        return this;
+    }
+
     /**
      * Gets the return type for this query result
      *
@@ -887,12 +946,8 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *
      */
     public enum PermittedParameterType {
-        number(1),
-        date(new Date()),
-        text("text"),
-        bool(Boolean.TRUE),
-        numberslist(Arrays.asList(1, 2, 3)),
-        textslist(Arrays.asList("text1", "text2"));
+        number(1), date(new Date()), text("text"), bool(Boolean.TRUE), numberslist(Arrays.asList(1, 2, 3)), textslist(
+            Arrays.asList("text1", "text2"));
 
         private final Object example;
 

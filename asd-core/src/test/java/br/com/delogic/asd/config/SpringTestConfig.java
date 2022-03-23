@@ -53,6 +53,7 @@ public class SpringTestConfig extends EclipseLinkJpaConfig {
         ds.setUrl("jdbc:postgresql://localhost:5432/asd");
         ds.setUsername("postgres");
         ds.setPassword("manager");
+        ds.setInitialSize(5);
         return ds;
     }
 
