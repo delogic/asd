@@ -10,7 +10,7 @@
     <!--alterar versao de todos com: mvn versions:set -DgenerateBackupPoms=false 
         | executar na raiz do projeto -->
     <version>0.0.5-SNAPSHOT</version>
-    <name>Arquitetura de Serviços Delogic</name>
+    <name>Arquitetura de Servicos Delogic</name>
 
     <modules>
         <module>asd-core</module>
