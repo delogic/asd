@@ -327,11 +327,9 @@
             </plugins>
         </pluginManagement>
     </build>
-
     <scm>
         <connection>scm:git:ssh://github.com/delogic/asd</connection>
     </scm>
-
     <distributionManagement>
         <repository>
             <id>releases</id>
